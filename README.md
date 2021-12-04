@@ -9,7 +9,7 @@
 <ul>
 <li>NVIDIA Jetson Nano B01 4GB RAM, Intel 8265NGW card, Mica case with fan</li>
 <li>MicroSD Card 64GB Class 10</li>
-<li><a href="https://www.waveshare.com/imx219-83-stereo-camera.htm">Waveshare IMX219-83 Stereo Camera</a></li>
+<li><a href="https://www.waveshare.com/imx219-83-stereo-camera.html">Waveshare IMX219-83 Stereo Camera</a></li>
 <li>Arduino Uno R3</li>
 <li>Motor Driver L298N</li>
 <li>GY-521 Acceleration Gyroscope Module</li>
