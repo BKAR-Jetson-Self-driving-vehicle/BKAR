@@ -17,5 +17,5 @@
 <li>DC-DC 24/12V to 5V-5A Converter</li>
 <li>Mica chassis, engine, and wheels</li>
 <li>Joystick Controler</li>
-<li>Screws, connecting wires, jumps, USB Type B caple, DC 5.5 jack, etc.</li>
+<li>Screws, connecting wires, jumps, USB Type B caple, DC 5.5 jack, LED, NPN trans, etc.</li>
 </ul
