@@ -23,4 +23,9 @@
 <h2>Processes</h2>
 <ol>
 <li>Electrical system design - DONE!</li>
+<li>Build a car - DONE!</li>
+<li>Make a road model - DONE!</li>
+<li>Programming Arduino to receive commands and control - DONE!</li>
+<li>Program Jetson Nano to receive commands from Joystick and control the car via Arduino - DONE</li>
+<li>Program Jetson Nano to record video to generate training data - IN PROCESS</li>
 </ol>
