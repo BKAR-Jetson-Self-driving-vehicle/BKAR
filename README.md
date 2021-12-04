@@ -1,2 +1,1 @@
-# Mini_Self-Driving_Car
-Mini Self-driving Car using NVIDIA Jetson Nano and Arduino Uno R3
+<h1 align="center">BKAR - Mini Self-driving Car</h1>
