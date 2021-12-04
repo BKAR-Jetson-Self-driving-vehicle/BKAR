@@ -1,0 +1,21 @@
+000: Welcome
+001: 
+010: 
+011: Goodbuy
+
+100: Gyro working
+101: Gyro not working
+111: Gyro send data
+
+120: Accelerometer working
+121: Accelerometer not working
+122: Accelerometer send data
+
+
+200: Motor A
+201: Motor B
+
+300: Head light
+301: left light
+302: right light
+303: stop light
