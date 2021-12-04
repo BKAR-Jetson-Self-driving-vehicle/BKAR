@@ -9,5 +9,6 @@
 <ul>
 <li>NVIDIA Jetson Nano B01 4GB RAM</li>
 <li>MicroSD Card 64GB Class 10</li>
+<li><a href="https://www.waveshare.com/imx219-83-stereo-camera.htm">Waveshare IMX219-83 Stereo Camera</a></li>
 <li>Arduino Uno R3</li>
 </ul
