@@ -18,7 +18,7 @@
 <li>Mica chassis, engine, and wheels</li>
 <li>Joystick Controler</li>
 <li>Screws, connecting wires, jumps, USB Type B caple, DC 5.5 jack, LED, NPN trans, etc.</li>
-</ul
+</ul>
 
 <h2>Processes</h2>
 <ol>
