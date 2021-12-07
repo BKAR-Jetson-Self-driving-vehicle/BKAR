@@ -1,3 +1,6 @@
+#include <MPU6050_tockn.h>
+#include <Wire.h>
+
 // L298N pins control motors
 #define IN1  7
 #define IN2 6 // PWM pin
@@ -12,7 +15,10 @@
 #define LED_STOP 10
 #define LED_HEAD 11
 
-// GY-521 sensor pins
+//================================================================
+// GY-521 sensor setup
+// SCL - A5; SDA - A4; INT - D2
+MPU6050 mpu6050(Wire);
 
 //================================================================
 // Speed of 2 motors
@@ -23,11 +29,11 @@ int MOTOR_B=0;
 int LIGHT[4] = {0, 0, 0, 0}; // use bool instead?
 
 // Array of status code
-String SystemCode[4] = {"000", "001", "010", "011"}; // 000-welcome 001-testSystem 010- 011-Goodbye
+String SystemCode[4] = {"000", "001", "010", "011"}; // 000-welcome 001-testSystem 010-BUZZ 011-Goodbye
 String SensorCode[6] = {"100", "101", "111", "120", "121", "122"};
-String MotorCode[2] = {"200", "201"};
+String MotorCode[2] = {"200", "201"}; // 200-RIGHT MOTOR; 201-LEFT MOTOR
 String LightCode[4] = {"300", "301", "302", "303"};
-String Msg;
+String Msg; // Message command from PC
 
 // define functions
 int welcome(); // Start car,flash light
@@ -35,7 +41,6 @@ int testSystem(); // Check all element in car
 int buzz(); // control Buzz speaker
 int goodbye(); // Left car, flash light
 
-int sendStatus();
 int Msg2Command(String Msg, char separator);
 int excuteCommand(String Cmd, char separator);
 
@@ -48,11 +53,13 @@ void Motor_1_Up(int speed);
 void Motor_2_Up(int speed);
 void Motor_1_Back(int speed);
 void Motor_2_Back(int speed);
+
+int sendGY521(); // Send data from GY521 sensor to PC via Serial
 //================================================================
 void setup() {
   // Start Serial at port 9600
   Serial.begin(9600);
-  testSystem();
+  
   // Set pinMode for LED pin control
   pinMode(LED_LEFT, OUTPUT);
   pinMode(LED_RIGHT, OUTPUT);
@@ -64,8 +71,13 @@ void setup() {
   digitalWrite(LED_RIGHT, LOW);
   digitalWrite(LED_HEAD, LOW);
   digitalWrite(LED_STOP, LOW);
-
-  Serial.write("System started!\n");
+  
+  // Setup GY521 Sensor
+  Wire.begin();
+  mpu6050.begin();
+  mpu6050.calcGyroOffsets(true);
+  
+//  Serial.write("System started!\n");
 }
 //================================================================
 void loop() {
@@ -80,10 +92,14 @@ void loop() {
     else { Msg += temp; }
 //      Msg = Serial.readStringUntil('\n'); // don't use this solution, it make python comunity via pyserial slowly than 1-2 sec
   }
+  
   // Control System
   controlLight();
   controlMotor();
   
+  //Sensor GY521 Update
+  mpu6050.update();
+  sendGY521();
  }
  
 //================================================================
@@ -163,7 +179,14 @@ int goodbye(){
 }
 
 //================================================================
-int sendStatus(){
+int sendGY521(){
+  Serial.print("[GY521]");
+  Serial.print(" X:");
+  Serial.print(mpu6050.getAngleX());
+  Serial.print(" Y:");
+  Serial.print(mpu6050.getAngleY());
+  Serial.print(" Z:");
+  Serial.println(mpu6050.getAngleZ());
   return 0;
 }
 
