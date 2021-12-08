@@ -12,7 +12,7 @@
 
 
 import os
-from BKAR import *
+from util import *
 
 
 class BKAR:
