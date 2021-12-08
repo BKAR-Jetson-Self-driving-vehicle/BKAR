@@ -180,7 +180,6 @@ int goodbye(){
 
 //================================================================
 int sendGY521(){
-  Serial.print("[GY521]");
   Serial.print(" X:");
   Serial.print(mpu6050.getAngleX());
   Serial.print(" Y:");

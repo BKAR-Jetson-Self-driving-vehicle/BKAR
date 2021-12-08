@@ -1,4 +1,4 @@
-#!./venv/bin/python3
+#!../venv/bin/python3
 # -*- coding: utf-8 -*-
 
 """
