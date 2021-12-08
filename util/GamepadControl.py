@@ -18,6 +18,20 @@ from inputs import get_gamepad
 
 class Gamepad:
     """
+    Read key state of Gamepad device
+    ---
+    User guide
+    ---
+    #Create an instance
+    >>> my_gp = Gamepad()
+    #Start gamepad
+    >>> my_gp.start()
+    #Read state of all Key in gamepad
+    >>> my_gp.getStateKey()
+    #Finish
+    >>> my_gp.__del__()
+    or
+    >>> del my_gp
     """
     def __init__(self):
         self.run_thread = None
