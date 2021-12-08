@@ -48,6 +48,8 @@ class Gamepad:
         while True:
             try:
                 events = get_gamepad()
+            # When gamepad disconnect, program stuck and not pass except
+            # When gamepad reconnect, program not resum read gamepad
             except OSError:
                 continue
             for event in events:
