@@ -76,8 +76,8 @@ void setup() {
   Wire.begin();
   mpu6050.begin();
   mpu6050.calcGyroOffsets(true);
-  
-//  Serial.write("System started!\n");
+  welcome();
+  Serial.write("System started!\n");
 }
 //================================================================
 void loop() {
@@ -180,7 +180,7 @@ int goodbye(){
 
 //================================================================
 int sendGY521(){
-  Serial.print(" X:");
+  Serial.print("X:");
   Serial.print(mpu6050.getAngleX());
   Serial.print(" Y:");
   Serial.print(mpu6050.getAngleY());
