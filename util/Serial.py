@@ -94,7 +94,7 @@ class SerialCommunication:
 
                 # Receive data
                 # self.__receiveMsg()
-            time.sleep(0.02)
+            time.sleep(0.04)
             if not self.__running:
                 break
 

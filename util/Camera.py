@@ -9,6 +9,7 @@
 - Github: https://github.com/thanhhoangvan
 +============================================================+
 """
+import cv2
 
 
 class CameraSystem:
