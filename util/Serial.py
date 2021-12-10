@@ -30,7 +30,7 @@ class Serial:
         self.__arduino = None
 
         # Message received string
-        self.__Cmd = ""
+        self.__Cmd = []
         self.__Msg = ""
 
         # Threading
@@ -41,9 +41,10 @@ class Serial:
 
     def __sendCmd(self):
         while True:
-            if self.__arduino is not None:
+            if len(self.__Cmd) > 0:
+                cmd = self.__Cmd.pop(0)
                 with self.__lock:
-                    self.__arduino.write((self.__Cmd + '\n').encode())
+                    self.__arduino.write((cmd + '\n').encode())
             time.sleep(0.01)
 
             if not self.__running:
@@ -53,14 +54,15 @@ class Serial:
         while True:
             if self.__arduino is not None:
                 with self.__lock:
-                    self.__Msg = self.__arduino.read_until()
+                    serial_msg = self.__arduino.read_until()
+                    self.__Msg = serial_msg.decode("utf-8")
             time.sleep(0.01)
 
             if not self.__running:
                 break
 
     def setCommand(self, Cmd):
-        self.__Cmd = Cmd
+        self.__Cmd.append(Cmd)
 
     def getMsg(self):
         return self.__Msg
