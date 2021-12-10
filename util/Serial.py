@@ -15,7 +15,7 @@ import serial
 import threading
 
 
-class SerialCommunication:
+class Serial:
     """
     """
     def __init__(self,
@@ -127,15 +127,16 @@ class SerialCommunication:
 
 
 if __name__ == "__main__":
-    BKAR = SerialCommunication()
-    BKAR.start()
+    # BKAR = SerialCommunication()
+    # BKAR.start()
 
-    count = 0
+    # count = 0
 
-    while True:
-        BKAR.setLight(0, 1)
-        count += 1
-        time.sleep(0.5)
-        if count == 300:
-            break
-    BKAR.release()
+    # while True:
+    #     BKAR.setLight(0, 1)
+    #     count += 1
+    #     time.sleep(0.5)
+    #     if count == 300:
+    #         break
+    # BKAR.release()
+    pass
