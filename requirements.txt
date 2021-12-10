@@ -1,2 +1,4 @@
-serial==0.0.97
+inputs==0.5
+numpy==1.19.5
 opencv-python==4.5.4.60
+pyserial==3.5
