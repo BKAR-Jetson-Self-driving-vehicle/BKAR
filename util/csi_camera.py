@@ -11,14 +11,16 @@
 import cv2
 import threading
 
+
 class RepeatTimer(threading.Timer):
     def run(self):
         while not self.finished.wait(self.interval):
             self.function(*self.args, **self.kwargs)
 
+
 class CSI_Camera:
 
-    def __init__ (self) :
+    def __init__(self):
         # Initialize instance variables
         # OpenCV video capture element
         self.video_capture = None
@@ -29,19 +31,18 @@ class CSI_Camera:
         self.read_thread = None
         self.read_lock = threading.Lock()
         self.running = False
-        self.fps_timer=None
-        self.frames_read=0
-        self.frames_displayed=0
-        self.last_frames_read=0
-        self.last_frames_displayed=0
-
+        self.fps_timer = None
+        self.frames_read = 0
+        self.frames_displayed = 0
+        self.last_frames_read = 0
+        self.last_frames_displayed = 0
 
     def open(self, gstreamer_pipeline_string):
         try:
             self.video_capture = cv2.VideoCapture(
                 gstreamer_pipeline_string, cv2.CAP_GSTREAMER
             )
-            
+
         except RuntimeError:
             self.video_capture = None
             print("Unable to open camera")
@@ -55,14 +56,14 @@ class CSI_Camera:
             print('Video capturing is already running')
             return None
         # create a thread to read the camera image
-        if self.video_capture != None:
-            self.running=True
+        if self.video_capture is not None:
+            self.running = True
             self.read_thread = threading.Thread(target=self.updateCamera)
             self.read_thread.start()
         return self
 
     def stop(self):
-        self.running=False
+        self.running = False
         self.read_thread.join()
 
     def updateCamera(self):
@@ -71,41 +72,40 @@ class CSI_Camera:
             try:
                 grabbed, frame = self.video_capture.read()
                 with self.read_lock:
-                    self.grabbed=grabbed
-                    self.frame=frame
+                    self.grabbed = grabbed
+                    self.frame = frame
                     self.frames_read += 1
             except RuntimeError:
                 print("Could not read image from camera")
         # FIX ME - stop and cleanup thread
         # Something bad happened
-        
 
     def read(self):
         with self.read_lock:
             frame = self.frame.copy()
-            grabbed=self.grabbed
+            grabbed = self.grabbed
         return grabbed, frame
 
     def release(self):
-        if self.video_capture != None:
+        if self.video_capture is not None:
             self.video_capture.release()
             self.video_capture = None
         # Kill the timer
         self.fps_timer.cancel()
         self.fps_timer.join()
         # Now kill the thread
-        if self.read_thread != None:
+        if self.read_thread is not None:
             self.read_thread.join()
 
     def update_fps_stats(self):
-        self.last_frames_read=self.frames_read
-        self.last_frames_displayed=self.frames_displayed
+        self.last_frames_read = self.frames_read
+        self.last_frames_displayed = self.frames_displayed
         # Start the next measurement cycle
-        self.frames_read=0
-        self.frames_displayed=0
+        self.frames_read = 0
+        self.frames_displayed = 0
 
     def start_counting_fps(self):
-        self.fps_timer=RepeatTimer(1.0,self.update_fps_stats)
+        self.fps_timer = RepeatTimer(1.0, self.update_fps_stats)
         self.fps_timer.start()
 
     @property
@@ -140,6 +140,3 @@ class CSI_Camera:
                 display_height,
             )
         )
-
-
-    
