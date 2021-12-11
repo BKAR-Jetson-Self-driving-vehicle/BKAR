@@ -114,7 +114,14 @@ class CamCSI:
         pass
 
     def showCapture(self):
-        pass
+        while True:
+            with self.__lock:
+                cv2.imshow('CSI Camera ' + str(self.sensor_id), self.frame)
+                keyCode = cv2.waitKey(20) & 0xFF
+
+                if keyCode == 27:
+                    break
+        cv2.destroyAllWindows()
 
     def stop(self):
         self.__running = False
@@ -128,4 +135,8 @@ class CamCSI:
 class DualCamera:
     """
     """
+    pass
+
+
+if __name__ == '__main__':
     pass
