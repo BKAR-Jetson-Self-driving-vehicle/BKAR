@@ -1,4 +1,4 @@
-from ..util.csi_camera import *
+from ..utils.csi_camera import *
 
 
 CAM = CSI_Camera()
