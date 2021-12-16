@@ -55,7 +55,8 @@ class Serial:
             if self.__arduino is not None:
                 with self.__lock:
                     serial_msg = self.__arduino.read_until()
-                    self.__Msg = serial_msg.decode("utf-8")
+                    if serial_msg != '\n':
+                        self.__Msg = serial_msg.decode("utf-8")
             time.sleep(0.01)
 
             if not self.__running:
@@ -81,6 +82,7 @@ class Serial:
             self.__serial_send = threading.Thread(target=self.__sendCmd,
                                                   daemon=True)
             self.__serial_send.start()
+
         if self.__serial_receive is None:
             self.__serial_receive = threading.Thread(target=self.__receiveData,
                                                      daemon=True)
@@ -98,4 +100,12 @@ class Serial:
 
 
 if __name__ == "__main__":
-    pass
+    mySerial = Serial()
+    mySerial.start()
+    time_now = time.time()
+    mySerial.setCommand('300:1\n')
+    while True:
+        if time.time() - time_now >= 30:
+            mySerial.disconnect()
+            break
+        print(mySerial.getMsg())

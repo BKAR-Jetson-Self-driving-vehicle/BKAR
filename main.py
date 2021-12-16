@@ -12,8 +12,9 @@
 
 
 import os
-# import cv2s
-from utils import *
+import time
+import threading
+from utils.Serial import Serial
 from threading import Thread
 
 
@@ -21,11 +22,11 @@ class BKAR:
     """
     """
     def __init__(self):
-        # Light
+        # Light[HEAD, LEFT, RIGHT, STOP]
         self.LightCodes = ['300', '301', '302', '303']
         self.Lights = [0, 0, 0, 0]
 
-        # Motor
+        # Motor[MotorA, MotorB]
         self.MotorCodes = ['200', '201']
         self.MotorRate = [0, 0]
         self.Gas = 0
@@ -33,30 +34,94 @@ class BKAR:
         # Data received from sensor
         self.Sensor = [0., 0., 0.]
 
-        # Frames captured from two cameras
-        self.LeftFrame = None
-        self.RIghtFrame = None
-
         # Car status
         self.Status = ['Running', 'Stop',
                        'Lost Connection', 'Turn Left',
                        'Turn Right',
                        ]
-    pass
+
+        # Threading
+        self.running = False
+        self.lock = threading.Lock()
+        self.main_thread = None
+
+        # Serial
+        self.SerialCom = None
+
+    def __controlLight(self):
+        if self.Gas == 0 or self.Lights[0] == 1:
+            self.Lights[-1] = 1
+        else:
+            self.Lights[-1] = 0
+
+        if self.SerialCom is not None:
+            for code in range(len(self.LightCodes)):
+                self.SerialCom.setCommand(self.LightCodes[code]
+                                          + ':'
+                                          + str(self.Lights[code])
+                                          + '\n')
+
+    def __controlMotor(self):
+        if self.SerialCom is not None:
+            for code in range(len(self.MotorCodes)):
+                self.SerialCom.setCommand(self.MotorCodes[code]
+                                          + ':'
+                                          + str(self.MotorRate[code]*self.Gas)
+                                          + '\n')
+
+    def start(self):
+        if self.running:
+            print("Already running!")
+            return
+
+        self.running = True
+
+        # Start Serial communication
+        self.SerialCom = Serial()
+        self.SerialCom.start()
+
+        # Start threading
+        self.running = True
+        self.main_thread = threading.Thread(target=self.run)
+        self.main_thread.setDaemon = True
+        self.main_thread.start()
+
+    def run(self):
+        while self.running:
+
+            # Control Light
+            self.__controlLight
+
+            # Control Motor
+            self.__controlMotor
+
+    def release(self):
+        self.running = False
+
+        # Stop threading
+        if self.main_thread is not None:
+            self.main_thread.join()
+
+        # Stop Serial communication
+        if self.SerialCom is not None:
+            self.SerialCom.disconnect()
+
+    def __del__(self):
+        self.release()
 
 
-class HandMode:
-    """
-    """
-    def __init__(self):
-        pass
+if __name__ == '__main__':
+    car = BKAR()
+    car.start()
+    now = time.time()
+    while True:
+        if time.time() - now >= 30:
+            car.running = False
+            time.sleep(0.5)
+            car.release()
+            break
 
-    def input(self):
-        pass
+    car.Lights = [1, 1, 1, 1]
 
-
-class AutoMode:
-    """
-    """
-    def __init__(self):
-        pass
+    car.MotorRate = [1, 1]
+    car.Gas = 100
