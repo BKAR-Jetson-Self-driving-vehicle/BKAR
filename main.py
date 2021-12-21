@@ -34,12 +34,6 @@ class BKAR:
         # Data received from sensor
         self.Sensor = [0., 0., 0.]
 
-        # Car status
-        self.Status = ['Running', 'Stop',
-                       'Lost Connection', 'Turn Left',
-                       'Turn Right',
-                       ]
-
         # Threading
         self.running = False
         self.lock = threading.Lock()
@@ -58,16 +52,21 @@ class BKAR:
             for code in range(len(self.LightCodes)):
                 self.SerialCom.setCommand(self.LightCodes[code]
                                           + ':'
-                                          + str(self.Lights[code])
-                                          + '\n')
+                                          + str(self.Lights[code]))
 
     def __controlMotor(self):
         if self.SerialCom is not None:
             for code in range(len(self.MotorCodes)):
                 self.SerialCom.setCommand(self.MotorCodes[code]
                                           + ':'
-                                          + str(self.MotorRate[code]*self.Gas)
-                                          + '\n')
+                                          + str(self.MotorRate[code]*self.Gas))
+            time.sleep(0.2)
+
+    def __readMessage(self):
+        if self.SerialCom is not None:
+            msg = self.SerialCom.getMsg()
+            if len(msg) > 10:
+                print(msg)
 
     def start(self):
         if self.running:
@@ -88,12 +87,14 @@ class BKAR:
 
     def run(self):
         while self.running:
-
             # Control Light
-            self.__controlLight
+            self.__controlLight()
 
             # Control Motor
-            self.__controlMotor
+            self.__controlMotor()
+
+            # Read message
+            self.__readMessage()
 
     def release(self):
         self.running = False
@@ -115,13 +116,8 @@ if __name__ == '__main__':
     car.start()
     now = time.time()
     while True:
-        if time.time() - now >= 30:
+        if time.time() - now >= 25:
             car.running = False
             time.sleep(0.5)
             car.release()
             break
-
-    car.Lights = [1, 1, 1, 1]
-
-    car.MotorRate = [1, 1]
-    car.Gas = 100

@@ -100,12 +100,4 @@ class Serial:
 
 
 if __name__ == "__main__":
-    mySerial = Serial()
-    mySerial.start()
-    time_now = time.time()
-    mySerial.setCommand('300:1\n')
-    while True:
-        if time.time() - time_now >= 30:
-            mySerial.disconnect()
-            break
-        print(mySerial.getMsg())
+    pass
