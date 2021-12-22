@@ -91,10 +91,10 @@ class BKAR:
             self.__controlLight()
 
             # Control Motor
-            self.__controlMotor()
+            # self.__controlMotor()
 
             # Read message
-            self.__readMessage()
+            # self.__readMessage()
 
     def release(self):
         self.running = False

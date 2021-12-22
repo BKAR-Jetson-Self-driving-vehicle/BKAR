@@ -83,17 +83,17 @@ class Serial:
                                                   daemon=True)
             self.__serial_send.start()
 
-        if self.__serial_receive is None:
-            self.__serial_receive = threading.Thread(target=self.__receiveData,
-                                                     daemon=True)
-            self.__serial_receive.start()
+        # if self.__serial_receive is None:
+        #     self.__serial_receive = threading.Thread(target=self.__receiveData,
+        #                                              daemon=True)
+        #     self.__serial_receive.start()
 
     def disconnect(self):
         self.__running = False
         time.sleep(0.2)
         self.__arduino.close()
         self.__serial_send.join()
-        self.__serial_receive.join()
+        # self.__serial_receive.join()
 
     def __del__(self):
         self.disconnect()
