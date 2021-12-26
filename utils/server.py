@@ -11,16 +11,28 @@
 """
 
 import os
+import cv2
 import socket
+import pickle
+import struct
+import threading
 
 
 class ConnectServer:
     """
     """
     def __init__(self):
-        pass
+        self.IP = '192.168.53.102'
+        self.PORT = 8000
 
-    def StreamVideo(self):
+        self.receiveMsg = ''
+        self.sendMsg = ''
+
+        self.locking = threading.Lock()
+        self.server_thread = None
+        self.running = False
+
+    def streamVideo(self):
         pass
 
     def receiveControl(self):
