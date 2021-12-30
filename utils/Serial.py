@@ -55,7 +55,8 @@ class Serial:
             if self.__arduino is not None:
                 with self.__lock:
                     serial_msg = self.__arduino.read_until()
-                    self.__Msg = serial_msg.decode("utf-8")
+                    if serial_msg != '\n':
+                        self.__Msg = serial_msg.decode("utf-8")
             time.sleep(0.01)
 
             if not self.__running:
@@ -81,17 +82,18 @@ class Serial:
             self.__serial_send = threading.Thread(target=self.__sendCmd,
                                                   daemon=True)
             self.__serial_send.start()
-        if self.__serial_receive is None:
-            self.__serial_receive = threading.Thread(target=self.__receiveData,
-                                                     daemon=True)
-            self.__serial_receive.start()
+
+        # if self.__serial_receive is None:
+        #     self.__serial_receive = threading.Thread(target=self.__receiveData,
+        #                                              daemon=True)
+        #     self.__serial_receive.start()
 
     def disconnect(self):
         self.__running = False
         time.sleep(0.2)
         self.__arduino.close()
         self.__serial_send.join()
-        self.__serial_receive.join()
+        # self.__serial_receive.join()
 
     def __del__(self):
         self.disconnect()
