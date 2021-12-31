@@ -24,12 +24,12 @@ class BKAR:
     def __init__(self):
         # Light[HEAD, LEFT, RIGHT, STOP]
         self.LightCodes = ['300', '301', '302', '303']
-        self.Lights = [0, 0, 0, 0]
+        self.Lights = [1, 1, 1, 1]
 
         # Motor[MotorA, MotorB]
         self.MotorCodes = ['200', '201']
-        self.MotorRate = [0, 0]
-        self.Gas = 0
+        self.MotorRate = [1, 1]
+        self.Gas = 200
 
         # Data received from sensor
         self.Sensor = [0., 0., 0.]
@@ -49,24 +49,26 @@ class BKAR:
             self.Lights[-1] = 0
 
         if self.SerialCom is not None:
-            for code in range(len(self.LightCodes)):
-                self.SerialCom.setCommand(self.LightCodes[code]
-                                          + ':'
-                                          + str(self.Lights[code]))
+            for code in range(4):
+                CMD = self.LightCodes[code]\
+                      + ':'\
+                      + str(self.Lights[code])
+                self.SerialCom.setCommand(CMD)
 
     def __controlMotor(self):
         if self.SerialCom is not None:
-            for code in range(len(self.MotorCodes)):
-                self.SerialCom.setCommand(self.MotorCodes[code]
-                                          + ':'
-                                          + str(self.MotorRate[code]*self.Gas))
-            time.sleep(0.2)
+            for code in range(2):
+                CMD = self.MotorCodes[code]\
+                      + ':'\
+                      + str(self.MotorRate[code]*self.Gas)
+
+                self.SerialCom.setCommand(CMD)
+                time.sleep(0.2)
 
     def __readMessage(self):
         if self.SerialCom is not None:
             msg = self.SerialCom.getMsg()
-            if len(msg) > 10:
-                print(msg)
+            pass
 
     def start(self):
         if self.running:
@@ -91,10 +93,12 @@ class BKAR:
             self.__controlLight()
 
             # Control Motor
-            # self.__controlMotor()
+            self.__controlMotor()
 
             # Read message
-            # self.__readMessage()
+            self.__readMessage()
+
+            time.sleep(0.01)
 
     def release(self):
         self.running = False
@@ -112,12 +116,4 @@ class BKAR:
 
 
 if __name__ == '__main__':
-    car = BKAR()
-    car.start()
-    now = time.time()
-    while True:
-        if time.time() - now >= 25:
-            car.running = False
-            time.sleep(0.5)
-            car.release()
-            break
+    pass
