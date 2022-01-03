@@ -98,8 +98,8 @@ void loop() {
   controlMotor();
   
   //Sensor GY521 Update
-  mpu6050.update();
-  sendGY521();
+//  mpu6050.update();
+//  sendGY521();
  }
  
 //================================================================
