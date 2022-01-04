@@ -93,6 +93,4 @@ class Gamepad:
 
 
 if __name__ == '__main__':
-    gamepad = Gamepad()
-    gamepad.start()
-    print(gamepad.getStateKey())
+    pass
