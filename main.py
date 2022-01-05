@@ -24,12 +24,12 @@ class BKAR:
     def __init__(self):
         # Light[HEAD, LEFT, RIGHT, STOP]
         self.LightCodes = ['300', '301', '302', '303']
-        self.Lights = [1, 1, 1, 1]
+        self.Lights = [0, 0, 0, 0]
 
         # Motor[MotorA, MotorB]
         self.MotorCodes = ['200', '201']
-        self.MotorRate = [1, 1]
-        self.Gas = 200
+        self.MotorRate = [0, 0]
+        self.Gas = 0
 
         # Data received from sensor
         self.Sensor = [0., 0., 0.]
