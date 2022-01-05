@@ -81,9 +81,11 @@ class BKAR_Cameras:
     """
     def __init__(self):
         self.leftCam = CSI_Camera()
+        self.leftID = 0
         self.leftFrame = None
 
         self.rightCam = CSI_Camera()
+        self.rightID = 1
         self.rightFrame = None
 
         self.BKARCam_threading = None
@@ -97,6 +99,7 @@ class BKAR_Cameras:
         self.FlipMethod = 2
 
     def gstreamer_pipeline(
+        self,
         sensor_id=0,
         sensor_mode=2,
         capture_width=1920,
@@ -104,7 +107,7 @@ class BKAR_Cameras:
         display_width=1920,
         display_height=1080,
         framerate=29,
-        flip_method=0,
+        flip_method=0
     ):
         return (
             "nvarguscamerasrc sensor-id=%d sensor-mode=%d ! "
@@ -133,11 +136,11 @@ class BKAR_Cameras:
         # Start left Camera
         self.leftCam.open(
             self.gstreamer_pipeline(
-                sensor_id=0,
+                sensor_id=self.leftID,
                 sensor_mode=self.SensorMode,
                 flip_method=self.FlipMethod,
                 display_height=self.Height,
-                display_width=self.Width,
+                display_width=self.Width
             )
         )
         self.leftCam.start()
@@ -145,11 +148,11 @@ class BKAR_Cameras:
         # Start right Camera
         self.leftCam.open(
             self.gstreamer_pipeline(
-                sensor_id=1,
+                sensor_id=self.rightID,
                 sensor_mode=self.SensorMode,
                 flip_method=self.FlipMethod,
                 display_height=self.Height,
-                display_width=self.Width,
+                display_width=self.Width
             )
         )
         self.rightCam.start()
@@ -191,4 +194,8 @@ class BKAR_Cameras:
 
 
 if __name__ == '__main__':
-    pass
+    bk_cam = BKAR_Cameras()
+    bk_cam.startBKARCameras()
+    left, _ = bk_cam.getFrame()
+    time.sleep(10)
+    bk_cam.release()
