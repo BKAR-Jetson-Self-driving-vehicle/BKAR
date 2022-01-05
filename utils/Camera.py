@@ -76,22 +76,34 @@ class CSI_Camera:
             self.read_thread.join()
 
 
-class BKAI_Cameras:
+class BKAR_Cameras:
     """
     """
-    def __init__(self, sensorID=0, sensorMode=3,
-                 height=720, width=1280, fps=60,
-                 flipMode=0, record=False):
-        pass
+    def __init__(self):
+        self.leftCam = CSI_Camera()
+        self.leftFrame = None
+
+        self.rightCam = CSI_Camera()
+        self.rightFrame = None
+
+        self.BKARCam_threading = None
+        self.running = False
+        self.thread_lock = threading.Lock()
+
+        self.Height = 1080
+        self.Width = 1920
+        self.FPS = 29
+        self.SensorMode = 2
+        self.FlipMethod = 2
 
     def gstreamer_pipeline(
         sensor_id=0,
         sensor_mode=2,
-        capture_width=1280,
-        capture_height=720,
-        display_width=1280,
-        display_height=720,
-        framerate=30,
+        capture_width=1920,
+        capture_height=1080,
+        display_width=1920,
+        display_height=1080,
+        framerate=29,
         flip_method=0,
     ):
         return (
@@ -114,6 +126,68 @@ class BKAI_Cameras:
                 display_height,
             )
         )
+
+    def startBKARCameras(self):
+        """
+        """
+        # Start left Camera
+        self.leftCam.open(
+            self.gstreamer_pipeline(
+                sensor_id=0,
+                sensor_mode=self.SensorMode,
+                flip_method=self.FlipMethod,
+                display_height=self.Height,
+                display_width=self.Width,
+            )
+        )
+        self.leftCam.start()
+
+        # Start right Camera
+        self.leftCam.open(
+            self.gstreamer_pipeline(
+                sensor_id=1,
+                sensor_mode=self.SensorMode,
+                flip_method=self.FlipMethod,
+                display_height=self.Height,
+                display_width=self.Width,
+            )
+        )
+        self.rightCam.start()
+
+        # Start BKAR Cameras Thread
+        if self.running:
+            print("BKAR Cameras is running!")
+            return
+        if self.BKARCam_threading is not None:
+            self.running = True
+            self.BKARCam_threading = threading.Thread(
+                target=self.captureCameras)
+            self.BKARCam_threading.setDaemon = True
+            self.BKARCam_threading.start()
+
+    def captureCameras(self):
+        while self.running:
+            with self.thread_lock:
+                _, self.leftFrame = self.leftCam.read()
+                _, self.rightFrame = self.rightCam.read()
+
+    def getFrame(self):
+        """
+        """
+        return self.leftFrame, self.rightFrame
+
+    def stopBKARCameras(self):
+        self.running = False
+        self.BKARCam_threading.join
+
+    def release(self):
+        self.running = False
+        if self.BKARCam_threading is not None:
+            self.BKARCam_threading.join()
+        self.leftCam.stop()
+        self.leftCam.release()
+        self.rightCam.stop()
+        self.rightCam.release()
 
 
 if __name__ == '__main__':
