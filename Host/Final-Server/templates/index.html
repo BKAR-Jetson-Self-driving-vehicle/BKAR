@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển</title>
+
+    <!-- Link css -->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/mystyle.css')}}">
+
+</head>
+<body>
+
+    <!-- Main control frame -->
+    <div class="main">
+        <!-- Left panel -->
+        <div class="left-panel">
+            <div class="left-panel-row1">
+                <div class="gear-level">
+                    <span class="on">N</span>
+                    <span class="off">R</span>
+                    <span class="off">D</span>
+                </div>
+                <div class="gear-level-current">N</div>
+                <div class="distance">999 Km</div>
+            </div>
+            <div class="left-panel-row2">
+                <div class="brand-name">BKAR</div>
+                <div class="voltage">12.6 V</div>
+            </div>
+            <div class="left-panel-row3">
+                <img class="car-model" src="{{url_for('static', filename = 'images/car-top-view.png')}}" alt="BKAR">
+                <!-- <img class="car-direct" src="{{url_for('static', filename = 'icons/car-icons/left-2.svg')}}" alt="BKAR"> -->
+            </div>
+            <div class="left-panel-row4">
+                <img class="icon" src="{{url_for('static', filename = 'icons/car-icons/left-4.svg')}}" alt="Head Light" >
+                <img class="icon" src="{{url_for('static', filename = 'icons/car-icons/headlight.svg')}}" alt="Head Light" >
+                <img class="icon" src="{{url_for('static', filename = 'icons/car-icons/right-4.svg')}}" alt="Head Light" >
+            </div>
+        </div>
+
+        <!-- Right panel -->
+        <div class="right-panel">
+            <div class="right-panel-top">
+                <div class="ip-address">192.168.53.112</div>
+                <div class="delay">31 ms</div>
+                <div class="time-and-temp">25*C - 09:11 AM</div>
+            </div>
+            <div class="stream-screen">
+                <span style="color: white; text-align: center; font-weight: bold; font-size: 4vw; padding-top: 15vw;">
+                    This is the stream video screen
+                </span>
+                <!-- <iframe width='100%' height="100%" src="./videos/test.mp4"></iframe> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer status notification -->
+    <div class="footer">
+        <img class="icon" src="{{url_for('static', filename = 'icons/traffic-signs/traffic-sign.svg')}}" alt="traffic-sign">
+        <input type="image" class="icon" id="Self-Driving-mode" src="{{url_for('static', filename= 'icons/car-icons/self-driving-mode.svg')}}"/>
+        <input type="image" class="icon" id="Remote-Control-mode" src="{{url_for('static', filename = 'icons/car-icons/remote-control-mode.svg')}}"/>
+        <div class="motor-ratio">
+            0.5 <div class="unit">A</div>
+        </div>
+        <div class="car-speed">
+            50 <div class="unit">cm/s</div>
+        </div>
+        <div class="motor-ratio">
+            0.5 <div class="unit">B</div>
+        </div>
+        <div class="sensor-data">
+            0.00 <div class="unit">X-axis</div>
+        </div>
+        <div class="sensor-data">
+            0.00 <div class="unit">Y-axis</div>
+        </div><div class="sensor-data">
+            0.00 <div class="unit">Z-axis</div>
+        </div>
+    </div>
+    <!-- Link js file -->
+    <script src="{{url_for('static', filename = 'js/myscript.js')}}"></script>
+</body>
+</html>
