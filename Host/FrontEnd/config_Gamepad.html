@@ -1,29 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Config GamePad</title>
-  <link rel="stylesheet" href="./css/config_conncetion.css">
+  <title>GamePad/Joystick</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="./css/configController.css">
 </head>
 
 <body>
-<div id="container">
-  <header id="header" class="center">
-    <h1 id="title"><strong>Config GamePad/Joystick</strong></h1>
-    <p id="description"><em>Setting your devide control</em></p>
-  </header>
-  
-  <form action="" id="survey-form">
-    
-    <!-- <div class="form-group">
-      <label for="name" id="name-label">IP Adress</label>
-      <input type="text" id="name" class="form-control" placeholder="192.168.xxx.xxx" required>
-    </div>    -->
-    
-    <div class="form-group-button">
-      <button id="submit" type="submit">Save Config</button>
-    </div>
-  </form>
-</div>
+  <!-- partial:index.partial.html -->
+  <h1>GamePad/Joystick</h1>
+  <p>Plug in your GamePad/Joystick controller via USB</p>
+  <div id="pad"></div>
+  <!-- partial -->
+  <script src="./js/configController.js"></script>
 </body>
 </html>

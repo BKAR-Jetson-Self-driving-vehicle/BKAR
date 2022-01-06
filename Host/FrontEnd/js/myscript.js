@@ -1,9 +1,11 @@
+// Warning
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     alert("Giao diện không phù hợp cho thiết bị di động, vui lòng truy cập vào bằng thiết bị màn hình lớn!");
 } else {
     //Now include js files
 }
 
+// Time
 function showTime(){
     var date = new Date();
     var h = date.getHours(); // 0 - 23
@@ -28,3 +30,7 @@ function showTime(){
     setTimeout(showTime, 1000);
 }
 showTime();
+
+// Delay
+
+// IP Address
