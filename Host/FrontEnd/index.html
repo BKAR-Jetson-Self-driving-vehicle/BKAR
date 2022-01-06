@@ -25,7 +25,7 @@
                     <span class="off">D</span>
                 </div>
                 <div class="gear-level-current">N</div>
-                <div class="distance">999 Km</div>
+                <div class="distance">000 Km</div>
             </div>
             <div class="left-panel-row2">
                 <div class="brand-name">BKAR</div>
@@ -43,11 +43,15 @@
         </div>
 
         <!-- Right panel -->
-        <div class="right-panel">
+        <div class="right-panel" onload="showTime();">
             <div class="right-panel-top">
-                <div class="ip-address">192.168.53.112</div>
-                <div class="delay">31 ms</div>
-                <div class="time-and-temp">25*C - 09:11 AM</div>
+                <div class="ip-address">192.168.xxx.xxx</div>
+                <div class="delay">00 ms</div>
+                <div class="time-and-temp">
+                    <span>25*C</span>
+                    <span> - </span>
+                    <span id="MyClockDisplay">00:00 AM</span>
+                </div>
             </div>
             <div class="stream-screen">
                 <span style="color: white; text-align: center; font-weight: bold; font-size: 4vw; padding-top: 15vw;">
@@ -64,13 +68,13 @@
         <input type="image" class="icon" id="Self-Driving-mode" src="./icons/car-icons/self-driving-mode.svg"/>
         <input type="image" class="icon" id="Remote-Control-mode" src="./icons/car-icons/remote-control-mode.svg"/>
         <div class="motor-ratio">
-            0.5 <div class="unit">A</div>
+            0.0 <div class="unit">A</div>
         </div>
         <div class="car-speed">
-            50 <div class="unit">km/h</div>
+            00 <div class="unit">km/h</div>
         </div>
         <div class="motor-ratio">
-            0.5 <div class="unit">B</div>
+            0.0 <div class="unit">B</div>
         </div>
         <div class="sensor-data">
             0.00 <div class="unit">X-axis</div>
@@ -82,7 +86,6 @@
         </div>
     </div>
     <!-- Link js file -->
-    <script src="./js/bootstrap.min.js"></script>
     <script src="./js/myscript.js"></script>
 </body>
 </html>
