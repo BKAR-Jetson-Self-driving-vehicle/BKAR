@@ -14,7 +14,7 @@
 
 body {
   font-family: 'Comfortaa', Calibri;
-  font-size: 1rem;
+  font-size: 1vw;
   font-weight: 800;
   line-height: 1.4;
   color: var(--inai-purple);
@@ -37,7 +37,7 @@ body::before {
 
 #container {
   width: 100%;
-  margin: 3rem auto 6rem auto;
+  margin: 3vw auto 6vw auto;
   
 }
 
@@ -56,30 +56,30 @@ body::before {
 .center {
   text-align: center;
   color: var(--neon-pink);
-  font-size: 1.5em;
+  font-size: 1.5vw;
   text-shadow: 0 0 0.25em hsl(0 0% 100%/0.5),
   0 0 1em currentColor;
 }
 
 p {
-  font-size: 1.1rem;
+  font-size: 2vw;
 }
 
 h1,
 p {
   margin-top: 0;
-  margin-bottom: .5rem;
+  margin-bottom: 1.5vw;
 }
 
 #header {
-  margin-bottom: 3rem;
+  margin-bottom: 3vw;
 }
 
 label {
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1.1vw;
   align-items: center;
-  margin-bottom: .3rem;
+  margin-bottom: 1.3vw;
 }
 
 input,
@@ -94,7 +94,7 @@ textarea {
 /*form rules*/
 form {
   padding: 2.5rem .625rem;
-  border-radius: .75rem;
+  border-radius: 1.75vw;
   border: 8px solid var(--neon-pink); 
   box-shadow: inset 0 0 1em 0 var(--neon-pink),
   0 0 1em 0 var(--neon-pink);
@@ -108,15 +108,15 @@ form {
 
 .form-group {
   margin:0 auto 1.25rem auto;
-  padding:.25rem; 
+  padding:.25vw; 
 }
 
 .form-control {
   display: block;
   width:100%;
-  height: 2.5rem;
-  padding: .5rem;
-  border-radius: .25rem;
+  height: 2.5vw;
+  padding: .5vw;
+  border-radius: .25vw;
   border: 1px solid black;
   background: var(--inai-purple);
 }
