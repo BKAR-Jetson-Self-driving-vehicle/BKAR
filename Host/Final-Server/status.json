@@ -3,6 +3,8 @@
         "TIMESTAMP": 1641528724,
         "IP": "192.168.53.112",
         "CONNECTED": true,
+        "DISTANCE": 0,
+        "VOLTAGE": 12.6,
         "TRAFFIC_SIGN": "",
         "GEAR": "N",
         "MODE": "REMOTE"
