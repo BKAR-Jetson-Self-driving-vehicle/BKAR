@@ -41,17 +41,32 @@
         </div>
 
         <!-- Right panel -->
-        <div class="right-panel">
+        <div class="right-panel" onload="showTime();">
             <div class="right-panel-top">
-                <div class="ip-address">192.168.53.112</div>
-                <div class="delay">31 ms</div>
-                <div class="time-and-temp">25*C - 09:11 AM</div>
+                <div class="ip-address">192.168.xxx.xxx</div>
+                <div class="delay">00 ms</div>
+                <div class="time">
+                    <span id="MyClockDisplay">00:00 AM</span>
+                </div>
             </div>
-            <div class="stream-screen">
-                <span style="color: white; text-align: center; font-weight: bold; font-size: 4vw; padding-top: 15vw;">
-                    This is the stream video screen
-                </span>
-                <!-- <iframe width='100%' height="100%" src="./videos/test.mp4"></iframe> -->
+            <div class="main-frame">
+                <div class="nav-bar">
+                    <div class="home icon">
+                        <input type="image" src="{{url_for('static', filename = 'icons/car-icons/home.svg')}}">
+                    </div>
+                    <div class="control icon">
+                        <input type="image" src="{{url_for('static', filename = 'icons/car-icons/control.svg')}}">
+                    </div>
+                    <div class="settings icon">
+                        <input type="image" src="{{url_for('static', filename = 'icons/car-icons/settings.svg')}}">
+                    </div>
+                    <div class="information icon">
+                        <input type="image" src="{{url_for('static', filename = 'icons/car-icons/information.svg')}}">
+                    </div>
+                </div>
+                <div class="stream-screen">
+                    <iframe src="" scrolling="no"></iframe>
+                </div>
             </div>
         </div>
     </div>

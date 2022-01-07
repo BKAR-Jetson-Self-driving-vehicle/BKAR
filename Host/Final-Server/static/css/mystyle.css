@@ -144,7 +144,7 @@ html, body{
     padding: auto;
 }
 
-.right-panel-top .time-and-temp{
+.right-panel-top .time{
     color: white;
     font-size: 2vw;
     font-weight: bold;
@@ -152,11 +152,45 @@ html, body{
     padding: auto;
 }
 
-.stream-screen{
+.main-frame{
     display: grid;
+    grid-template-columns: 15% auto;
     background-color: rgb(0, 0, 0);
     border: 1vw solid white;
     border-radius: 5%;
+}
+
+.main-frame .nav-bar{
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+
+.main-frame .nav-bar .home{
+    display: grid;
+    
+}
+
+.main-frame .nav-bar .control{
+    display: grid;
+}
+
+.main-frame .nav-bar .settings{
+    display: grid;
+}
+
+.main-frame .nav-bar .information{
+    display: grid;
+}
+
+.main-frame .stream-screen{
+    display: grid;
+}
+
+.stream-screen iframe{
+    width: 100%;
+    height: 100%;
+    margin: 0 0;
+    border-radius: 3%;
 }
 
 /* Footer notification bar */
