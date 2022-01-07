@@ -1,0 +1,25 @@
+{
+    "SYSTEM":{
+        "TIMESTAMP": 1641528724,
+        "IP": "192.168.53.112",
+        "CONNECTED": true,
+        "TRAFFIC_SIGN": "",
+        "GEAR": "N",
+        "MODE": "REMOTE"
+    },
+    "MOTOR":{
+        "SPEED": 0.0,
+        "A_RATE":0.0,
+        "B_RATE":0.0
+    },
+    "SENSOR":{
+        "X": 0.00,
+        "Y": 0.00,
+        "Z": 0.00
+    },
+    "LIGHT":{
+        "HEAD": 0,
+        "LEFT": 0,
+        "RIGHT": 0
+    }
+}
