@@ -37,6 +37,7 @@ async function getSystemData(){
         const data = await response.json();
         if(data.CONNECTED === true){
             document.getElementById("ip-address").innerText = data.IP;
+            document.getElementById("delay").innerText = String(Date.now() - data.TIMESTAMP) + " ms";
             document.getElementById("gear").innerText = data.GEAR;
             document.getElementById("voltage").innerText = data.VOLTAGE + " V";
             document.getElementById("distance").innerText = data.DISTANCE + " Km";
