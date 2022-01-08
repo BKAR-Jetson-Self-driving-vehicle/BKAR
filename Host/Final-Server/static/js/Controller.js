@@ -899,3 +899,22 @@
 new GameController({
     target: document.getElementById("pad")
 });
+
+// Title Device-name
+function GamepadTitle(){
+    let GamepadDevice = navigator.getGamepads();
+    if(GamepadDevice[0] === null){
+        document.getElementById("device-name").innerHTML= "Chưa có thiết bị nào kết nối!";
+        setTimeout(GamepadTitle, 1000);
+    }
+    else{
+        if(GamepadDevice[0].connected){
+            document.getElementById("device-name").innerHTML = GamepadDevice[0].id.split("(")[0];
+        }
+        else{
+            document.getElementById("device-name").innerHTML = "Chưa có thiết bị nào kết nối";
+            setTimeout(GamepadTitle, 1000);
+        }
+    }
+}
+GamepadTitle();

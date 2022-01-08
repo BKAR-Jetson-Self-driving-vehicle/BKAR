@@ -10,8 +10,8 @@
 
 <body>
   <!-- partial:index.partial.html -->
-  <h1>GamePad/Joystick</h1>
-  <p>Plug in your GamePad/Joystick controller via USB</p>
+  <h1 id="device-name" onload="GamepadTitle();">GamePad/Joystick Device</h1>
+  <p>Chỉ được kết nối tới một thiết bị Gamepad duy nhất</p>
   <div id="pad"></div>
   <!-- partial -->
   <script src="{{url_for('static', filename = 'js/Controller.js')}}"></script>

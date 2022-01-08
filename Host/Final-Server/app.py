@@ -40,7 +40,10 @@ class Control(Resource):
         return
 
 class Stream(Resource):
-    pass
+    def get(self):
+        return
+    def put(self):
+        return
 
 class Motor(Resource):
     def get(self):
