@@ -10,6 +10,10 @@ api = Api(app)
 def Dashboard():
     return render_template('index.html')
 
+@app.route('/Home')
+def Home():
+    return 'Home'
+
 @app.route('/Main')
 def Main():
     return 'Main'

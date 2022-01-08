@@ -156,7 +156,7 @@ html, body{
     display: grid;
     grid-template-columns: 15% auto;
     background-color: rgb(0, 0, 0);
-    border: 1vw solid white;
+    border: 1vw solid rgb(97, 214, 43);
     border-radius: 5%;
 }
 
