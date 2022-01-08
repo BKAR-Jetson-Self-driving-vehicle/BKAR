@@ -26,19 +26,36 @@ def startConnection():
     return 'Start connection'
 
 # API
-class Status(Resource):
+class System(Resource):
     def get(self):
         return {'hello': 'api'}
 
 class Control(Resource):
-    pass
+    def get(self):
+        return
 
 class Stream(Resource):
-    pass
+    def get(self):
+        return
 
-api.add_resource(Status, '/Status')
+class Motor(Resource):
+    def get(self):
+        return
+
+class Sensor(Resource):
+    def get(self):
+        return
+
+class Light(Resource):
+    def get(self):
+        return
+
+api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
 api.add_resource(Control, '/Stream')
+api.add_resource(Motor, '/Motor')
+api.add_resource(Sensor, '/Sensor')
+api.add_resource(Light, '/Light')
 
 if __name__ == '__main__':
     app.run(debug=True)
