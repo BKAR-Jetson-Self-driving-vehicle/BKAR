@@ -36,6 +36,18 @@ showTime();
 // IP Address
 
 // Main Frame Navigation Buttons
+document.getElementById("HomeButton").onclick = function HomeButtonClicked(){
+    document.getElementById("ScreenFrame").src = "/Main";
+}
+
 document.getElementById("ControllerButton").onclick = function ControllerButtonClicked(){
     document.getElementById("ScreenFrame").src = "/Controller";
+}
+
+document.getElementById("SettingsButton").onclick = function SettingsButtonClicked(){
+    document.getElementById("ScreenFrame").src = "/Settings";
+}
+
+document.getElementById("InforButton").onclick = function InforButtonClicked(){
+    document.getElementById("ScreenFrame").src = "/Information";
 }

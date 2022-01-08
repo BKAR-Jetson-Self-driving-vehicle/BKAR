@@ -10,6 +10,10 @@ api = Api(app)
 def Dashboard():
     return render_template('index.html')
 
+@app.route('/Main')
+def Main():
+    return 'Main'
+
 @app.route('/Stream')
 def streamCamera():
     return 'Camera'
@@ -21,6 +25,14 @@ def configControl():
 @app.route('/Connection')
 def Connection():
     return 'Connection'
+
+@app.route('/Settings')
+def Settings():
+    return 'Settings'
+
+@app.route('/Information')
+def Information():
+    return 'Information'
 
 # API
 class System(Resource):
