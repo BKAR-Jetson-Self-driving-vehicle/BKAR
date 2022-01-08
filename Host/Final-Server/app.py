@@ -50,7 +50,9 @@ class Motor(Resource):
 
 class Sensor(Resource):
     def get(self):
-        pass
+        with open('./status.json') as f:
+            data = json.load(f)
+            return data['SENSOR']
     def put(self):
         pass
 
