@@ -34,3 +34,8 @@ showTime();
 // Delay
 
 // IP Address
+
+// Main Frame Navigation Buttons
+document.getElementById("ControllerButton").onclick = function ControllerButtonClicked(){
+    document.getElementById("ScreenFrame").src = "/Controller";
+}

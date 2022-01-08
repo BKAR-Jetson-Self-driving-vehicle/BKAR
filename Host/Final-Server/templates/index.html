@@ -55,7 +55,7 @@
                         <input type="image" src="{{url_for('static', filename = 'icons/car-icons/home.svg')}}">
                     </div>
                     <div class="control icon">
-                        <input type="image" src="{{url_for('static', filename = 'icons/car-icons/control.svg')}}">
+                        <input type="image" id="ControllerButton" src="{{url_for('static', filename = 'icons/car-icons/control.svg')}}">
                     </div>
                     <div class="settings icon">
                         <input type="image" src="{{url_for('static', filename = 'icons/car-icons/settings.svg')}}">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="stream-screen">
-                    <iframe src="/Controller" scrolling="no"></iframe>
+                    <iframe id="ScreenFrame" src="/Controller" scrolling="no"></iframe>
                 </div>
             </div>
         </div>
