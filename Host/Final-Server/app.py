@@ -58,7 +58,9 @@ class Sensor(Resource):
 
 class Light(Resource):
     def get(self):
-        return
+        with open('./status.json') as f:
+            data = json.load(f)
+            return data['LIGHT']
 
 api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
