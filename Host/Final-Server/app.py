@@ -10,7 +10,7 @@ api = Api(app)
 def Dashboard():
     return render_template('index.html')
 
-@app.route('/Camera')
+@app.route('/Stream')
 def streamCamera():
     return 'Camera'
 
@@ -18,13 +18,9 @@ def streamCamera():
 def configControl():
     return render_template('Controller.html')
 
-@app.route('/ConfigConnection')
-def configConnection():
-    return 'ConfigConnection'
-
-@app.route('/StartConnection')
-def startConnection():
-    return 'Start connection'
+@app.route('/Connection')
+def Connection():
+    return 'Connection'
 
 # API
 class System(Resource):
@@ -37,6 +33,10 @@ class System(Resource):
 
 class Control(Resource):
     def get(self):
+        with open('./KEY.json') as f:
+            data = json.load(f)
+            return data
+    def put(self):
         return
 
 class Stream(Resource):
