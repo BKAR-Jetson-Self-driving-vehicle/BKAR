@@ -1,4 +1,5 @@
 import json
+import re
 from flask import Flask, redirect, request, url_for, render_template
 from flask_restful import Resource, Api
 app = Flask(__name__)
@@ -28,23 +29,30 @@ def startConnection():
 # API
 class System(Resource):
     def get(self):
-        return {'hello': 'api'}
+        with open('./status.json') as f:
+            data = json.load(f)
+            return data['SYSTEM']
+    def put(self):
+        return
 
 class Control(Resource):
     def get(self):
         return
 
 class Stream(Resource):
-    def get(self):
-        return
+    pass
 
 class Motor(Resource):
     def get(self):
-        return
+        with open('./status.json') as f:
+            data = json.load(f)
+            return data['MOTOR']
 
 class Sensor(Resource):
     def get(self):
-        return
+        pass
+    def put(self):
+        pass
 
 class Light(Resource):
     def get(self):
@@ -52,7 +60,7 @@ class Light(Resource):
 
 api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
-api.add_resource(Control, '/Stream')
+# api.add_resource(Control, '/Stream')
 api.add_resource(Motor, '/Motor')
 api.add_resource(Sensor, '/Sensor')
 api.add_resource(Light, '/Light')
