@@ -1,27 +1,27 @@
 {
     "SYSTEM":{
         "TIMESTAMP": 1641528724,
-        "IP": "192.168.53.112",
+        "IP": "192.168.53.113",
         "CONNECTED": true,
-        "DISTANCE": 99,
-        "VOLTAGE": 12.6,
+        "DISTANCE": 100,
+        "VOLTAGE": 12.4,
         "TRAFFIC_SIGN": "STOP",
         "GEAR": "N",
         "MODE": "REMOTE"
     },
     "MOTOR":{
-        "SPEED": 50,
-        "A_RATE":0.5,
-        "B_RATE":0.5
+        "SPEED": 98,
+        "A_RATE":0.9,
+        "B_RATE":0.6
     },
     "SENSOR":{
-        "X": 1.00,
-        "Y": 1.00,
-        "Z": 1.00
+        "X": 0.02,
+        "Y": 1.01,
+        "Z": 1.03
     },
     "LIGHT":{
-        "HEAD": 1,
-        "LEFT": 1,
-        "RIGHT": 1
+        "HEAD": true,
+        "LEFT": true,
+        "RIGHT": true
     }
 }

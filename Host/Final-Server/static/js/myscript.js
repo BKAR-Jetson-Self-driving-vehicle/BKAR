@@ -1,8 +1,6 @@
 // Warning
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     alert("Giao diện không phù hợp cho thiết bị di động, vui lòng truy cập vào bằng thiết bị màn hình lớn!");
-} else {
-    //Now include js files
 }
 
 // Time
@@ -31,9 +29,56 @@ function showTime(){
 }
 showTime();
 
-// Delay
+// System Information
+const api_system_url = 'http://127.0.0.1:5000/System';
+async function getSystemData(){
+    try{
+        const response = await fetch(api_system_url);
+        const data = await response.json();
+        if(data.CONNECTED === true){
+            document.getElementById("ip-address").innerText = data.IP;
+            document.getElementById("gear").innerText = data.GEAR;
+            document.getElementById("voltage").innerText = data.VOLTAGE + " V";
+            document.getElementById("distance").innerText = data.DISTANCE + " Km";
+        }
+        else{
+            document.getElementById("ip-address").innerText = "Disconnected";
+            document.getElementById("voltage").innerText = "0 V";
+            document.getElementById("distance").innerText = data.DISTANCE + " Km";
+        }
+    }
+    finally{
+        setTimeout(getSystemData, 50);
+    }
+}
+getSystemData();
 
-// IP Address
+// Footer status bar
+const api_motor_url = 'http://127.0.0.1:5000/Motor';
+const api_sensor_url = 'http://127.0.0.1:5000/Sensor';
+async function getFooterData(){
+    try{
+        const response_motor = await fetch(api_motor_url);
+        const response_sensor = await fetch(api_sensor_url);
+        const motor = await response_motor.json();
+        const sensor = await response_sensor.json();
+        
+        document.getElementById("rateA").innerText = motor.A_RATE;
+        document.getElementById("rateB").innerText = motor.B_RATE;
+        document.getElementById("speed").innerText = motor.SPEED;
+
+        document.getElementById("x-axis").innerText = sensor.X;
+        document.getElementById("y-axis").innerText = sensor.Y;
+        document.getElementById("z-axis").innerText = sensor.Z;
+    }
+    finally{
+        setTimeout(getFooterData, 50);
+    }
+}
+getFooterData();
+
+// Light status
+const api_light_url = 'http://127.0.0.1:5000/Light';
 
 // Main Frame Navigation Buttons
 document.getElementById("HomeButton").onclick = function HomeButtonClicked(){

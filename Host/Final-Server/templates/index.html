@@ -22,12 +22,12 @@
                     <span class="off">R</span>
                     <span class="off">D</span>
                 </div>
-                <div class="gear-level-current">N</div>
-                <div class="distance">--- Km</div>
+                <div id="gear" class="gear-level-current">N</div>
+                <div id="distance" class="distance">--- Km</div>
             </div>
             <div class="left-panel-row2">
-                <div class="brand-name">BKAR</div>
-                <div class="voltage">12.6 V</div>
+                <div class="brand-name">BKAR V1</div>
+                <div id="voltage" class="voltage">12.6 V</div>
             </div>
             <div class="left-panel-row3">
                 <img class="car-model" src="{{url_for('static', filename = 'images/car-top-view.png')}}" alt="BKAR">
@@ -43,7 +43,7 @@
         <!-- Right panel -->
         <div class="right-panel" onload="showTime();">
             <div class="right-panel-top">
-                <div class="ip-address">192.168.---.---</div>
+                <div id='ip-address' class="ip-address">192.168.---.---</div>
                 <div class="delay">-- ms</div>
                 <div class="time">
                     <span id="MyClockDisplay">--:--:-- AM</span>
@@ -77,21 +77,27 @@
         <input type="image" class="icon" id="Self-Driving-mode" src="{{url_for('static', filename= 'icons/car-icons/self-driving-mode.svg')}}"/>
         <input type="image" class="icon" id="Remote-Control-mode" src="{{url_for('static', filename = 'icons/car-icons/remote-control-mode.svg')}}"/>
         <div class="motor-ratio">
-            0.0 <div class="unit">A</div>
+            <span id="rateA" > 0.0 </span>
+            <div class="unit">A</div>
         </div>
         <div class="car-speed">
-            00 <div class="unit">cm/s</div>
+            <span id="speed"> 00 </span>
+            <div class="unit">cm/s</div>
         </div>
         <div class="motor-ratio">
-            0.0 <div class="unit">B</div>
+            <span id="rateB"> 0.0 </span>
+            <div class="unit">B</div>
         </div>
         <div class="sensor-data">
-            0.00 <div class="unit">X-axis</div>
+            <span id="x-axis"> 0.00 </span>
+            <div class="unit">X-axis</div>
         </div>
         <div class="sensor-data">
-            0.00 <div class="unit">Y-axis</div>
+            <span id="y-axis"> 0.00 </span>
+            <div class="unit">Y-axis</div>
         </div><div class="sensor-data">
-            0.00 <div class="unit">Z-axis</div>
+            <span id="z-axis"> 0.00 </span>
+            <div class="unit">Z-axis</div>
         </div>
     </div>
     <!-- Link js file -->
