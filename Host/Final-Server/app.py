@@ -14,9 +14,9 @@ def Dashboard():
 def streamCamera():
     return 'Camera'
 
-@app.route('/ConfigControl')
+@app.route('/Controller')
 def configControl():
-    return 'Config Gamepad/Joystick Control'
+    return render_template('Controller.html')
 
 @app.route('/ConfigConnection')
 def configConnection():
