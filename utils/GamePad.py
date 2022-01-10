@@ -12,26 +12,13 @@
 
 # Import Packages
 import json
+import time
+import requests
 import threading
-from inputs import get_gamepad
 
 
 class Gamepad:
     """
-    Read key state of Gamepad device
-    ---
-    User guide
-    ---
-    #Create an instance
-    >>> my_gp = Gamepad()
-    #Start gamepad
-    >>> my_gp.start()
-    #Read state of all Key in gamepad
-    >>> my_gp.getStateKey()
-    #Finish
-    >>> my_gp.__del__()
-    or
-    >>> del my_gp
     """
     def __init__(self):
         self.run_thread = None
@@ -59,25 +46,15 @@ class Gamepad:
             self.__load_config()
 
     def getGamePad(self):
-        while True:
-            try:
-                events = get_gamepad()
-            # When gamepad disconnect, program stuck and not pass except
-            # When gamepad reconnect, program not resum read gamepad
-            except OSError:
-                continue
-            for event in events:
-                ev_type = event.ev_type
-                ev_code = event.code
-                ev_state = event.state
-                with self.read_lock:
-                    if ev_type == 'Key':
-                        self.KEY['BUTTON'][ev_code] = ev_state
-                    elif ev_type == 'Absolute' \
-                            and ev_code not in ['ABS_Z', 'ABS_RZ']:
-                        self.KEY['JOYSTICK'][ev_code] = ev_state
-            if not self.running:
-                break
+        pass
+
+    def __getDataAPI(self):
+        """
+        """
+        url_control_api = ''
+        response = requests.get(url=url_control_api)
+        self.KEY = response.json()
+        time.sleep(0.01)
 
     def getStateKey(self):
         with self.read_lock:
