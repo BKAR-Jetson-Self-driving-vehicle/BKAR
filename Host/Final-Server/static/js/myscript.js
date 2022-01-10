@@ -44,6 +44,7 @@ async function getSystemData(){
         }
         else{
             document.getElementById("ip-address").innerText = "Disconnected";
+            document.getElementById("delay").innerText = "-- ms";
             document.getElementById("voltage").innerText = "0 V";
             document.getElementById("distance").innerText = data.DISTANCE + " Km";
         }
@@ -80,6 +81,20 @@ getFooterData();
 
 // Light status
 const api_light_url = 'http://127.0.0.1:5000/Light';
+async function getLightData(){
+    try{
+        const response_light = await fetch(api_light_url);
+        const lights = await response_light.json();
+        
+        // document.getElementById('left-light').style.filter = invert();
+        // document.getElementById('head-light').hidden = lights.HEAD;
+        // document.getElementById('light-light').hidden = lights.RIGHT;
+    }
+    finally{
+        setTimeout(getLightData, 50);
+    }
+}
+getLightData();
 
 // Main Frame Navigation Buttons
 document.getElementById("HomeButton").onclick = function HomeButtonClicked(){
