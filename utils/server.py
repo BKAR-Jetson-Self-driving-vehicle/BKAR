@@ -29,16 +29,13 @@ class ConnectServer:
     def createConnect(self):
         pass
 
-    def getSystemStatus(self):
+    def putMotorStatus(self, Motor=[0, 0], Gas=0):
         pass
 
-    def putMotorStatus(self):
+    def putLightStatus(self, Lights=[0, 0, 0]):
         pass
 
-    def putLightStatus(self):
-        pass
-
-    def getGamepad(self):
+    def putSensorStatus(self, Sensor=[0.0, 0.0, 0.0]):
         pass
 
     def streamVideo(self):
