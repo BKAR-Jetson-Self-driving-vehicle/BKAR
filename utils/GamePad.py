@@ -20,14 +20,14 @@ import threading
 class Gamepad:
     """
     """
-    def __init__(self):
+    def __init__(self, IP, PORT):
         self.run_thread = None
         self.read_lock = threading.Lock()
         self.running = False
         self.KEY = None
 
-    def configGamePad(self):
-        pass
+        self.IP = IP
+        self.PORT = PORT
 
     def __load_config(self):
         with open('./KEY.json', 'r') as StateKey:
@@ -39,22 +39,27 @@ class Gamepad:
             print('GamePad s thread is running!')
             return None
         else:
+            self.__load_config()
+
             self.running = True
-            self.run_thread = threading.Thread(target=self.getGamePad)
+            self.run_thread = threading.Thread(target=self.__getGamePad)
             self.run_thread.setDaemon = True
             self.run_thread.start()
             self.__load_config()
 
-    def getGamePad(self):
-        pass
+    def __getGamePad(self):
+        while self.running:
+            control = self.__getDataAPI()
+            with self.read_lock:
+                self.KEY = control
 
     def __getDataAPI(self):
         """
         """
-        url_control_api = ''
+        url_control_api = 'http://' + self.IP + ':' \
+            + str(self.PORT) + '/Control'
         response = requests.get(url=url_control_api)
-        self.KEY = response.json()
-        time.sleep(0.01)
+        return response.json()
 
     def getStateKey(self):
         with self.read_lock:
