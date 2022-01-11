@@ -1,9 +1,16 @@
 import json
-import re
 from flask import Flask, redirect, request, url_for, render_template
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse, abort
+
 app = Flask(__name__)
 api = Api(app)
+parser = reqparse.RequestParser()
+
+SYSTEM = {}
+LIGHT = {}
+KEY = {}
+MOTOR = {}
+SENSOR = {}
 
 # Views
 @app.route('/')
@@ -41,17 +48,13 @@ def Information():
 # API
 class System(Resource):
     def get(self):
-        with open('./status.json') as f:
-            data = json.load(f)
-            return data['SYSTEM']
+        return SYSTEM
     def put(self):
         return
 
 class Control(Resource):
     def get(self):
-        with open('./KEY.json') as f:
-            data = json.load(f)
-            return data
+        return KEY
     def put(self):
         return
 
@@ -63,23 +66,21 @@ class Stream(Resource):
 
 class Motor(Resource):
     def get(self):
-        with open('./status.json') as f:
-            data = json.load(f)
-            return data['MOTOR']
+        return MOTOR
+    def put(self):
+        pass
 
 class Sensor(Resource):
     def get(self):
-        with open('./status.json') as f:
-            data = json.load(f)
-            return data['SENSOR']
+        return SENSOR
     def put(self):
         pass
 
 class Light(Resource):
     def get(self):
-        with open('./status.json') as f:
-            data = json.load(f)
-            return data['LIGHT']
+        return LIGHT
+    def put(self):
+        pass
 
 api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
@@ -89,4 +90,14 @@ api.add_resource(Sensor, '/Sensor')
 api.add_resource(Light, '/Light')
 
 if __name__ == '__main__':
+    with open('status.json', 'r') as f:
+        status = json.load(f)
+        SYSTEM = status['SYSTEM']
+        MOTOR = status['MOTOR']
+        SENSOR = status['SENSOR']
+        LIGHT = [status['LIGHT']]
+
+    with open('KEY.json', 'r') as f:
+        KEY = json.load(f)
+
     app.run(debug=True)
