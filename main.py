@@ -42,6 +42,9 @@ class BKAR:
         # Serial
         self.SerialCom = None
 
+        # Driving Mode
+        self.MODE = 'REMOTE'
+
     def __controlLight(self):
         if self.Gas == 0 or self.Lights[0] == 1:
             self.Lights[-1] = 1

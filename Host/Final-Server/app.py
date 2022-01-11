@@ -76,12 +76,18 @@ def Information():
 class System(Resource):
     def get(self):
         return SYSTEM
+    
     def put(self):
-        return
+        args = SYSTEM_ARGS_PUT_API.parse_args()
+        for key in SYSTEM.keys():
+            if args[key] is not None:
+                SYSTEM[key] = args[key]
+        return SYSTEM
 
 class Control(Resource):
     def get(self):
         return KEY
+    
     def put(self):
         return
 
@@ -94,20 +100,35 @@ class Stream(Resource):
 class Motor(Resource):
     def get(self):
         return MOTOR
+    
     def put(self):
-        pass
+        args = MOTOR_ARGS_PUT_API.parse_args()
+        for key in MOTOR.keys():
+            if args[key] is not None:
+                MOTOR[key] = args[key]
+        return MOTOR
 
 class Sensor(Resource):
     def get(self):
         return SENSOR
+    
     def put(self):
-        pass
+        args = SENSOR_ARGS_PUT_API.parse_args()
+        for key in SENSOR.keys():
+            if args[key] is not None:
+                SENSOR[key] = args[key]
+        return SENSOR
 
 class Light(Resource):
     def get(self):
         return LIGHT
+    
     def put(self):
-        pass
+        args = LIGHT_ARGS_PUT_API.parse_args()
+        for key in LIGHT.keys():
+            if args[key] is not None:
+                LIGHT[key] = args[key]
+        return LIGHT
 
 api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
