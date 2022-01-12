@@ -59,7 +59,7 @@ def Connection():
     if SYSTEM['CONNECTED']:
         return redirect(url_for('/Stream'))
     else:
-        return 'Connection'
+        return render_template('Connection.html')
 
 @app.route('/Demo')
 def Demo():
