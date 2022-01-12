@@ -92,8 +92,10 @@ class Control(Resource):
     
     def put(self):
         args = CONTROL_ARGS_PUT_API.parse_args()
-        KEY["BUTTON"] = args['BUTTON']
-        KEY["AXIS"] = args['AXIS']
+        if args['BUTTON'] is not None:
+            KEY["BUTTON"] = args['BUTTON']
+        if args['AXIS'] is not None:
+            KEY["AXIS"] = args['AXIS']
         if args["CONNECTED"] is not None:
             KEY['CONNECTED'] = args['CONNECTED']
         return KEY

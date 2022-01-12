@@ -138,20 +138,42 @@ function Controller(){
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                body: JSON.stringify({"CONNECTED": true})
+            }).then(response => {
+                return response.json()
+            });
+            fetch(api_control_url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(KEY)
             }).then(response => {
                 return response.json()
-            }).then(data =>
-                // this is the data we get after putting our data,
-                console.log(data)
-            );
+            });
         }
         else{
-            // send notify msg about disconnected
+            fetch(api_control_url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"CONNECTED": false})
+            }).then(response => {
+                return response.json()
+            });
         }
     }
     else{
-        // send notify msg about disconnected
+        fetch(api_control_url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"CONNECTED": false})
+        }).then(response => {
+            return response.json()
+        });
     }
     setTimeout(Controller, 100);
 }
