@@ -1,4 +1,5 @@
 {
+    "CONNECTED": true,
     "BUTTON": {
         "BTN_NORTH": 0,
         "BTN_SOUTH": 0,
@@ -16,7 +17,7 @@
         "BTN_TR2": 0,
         "BTN_TL": 0,
         "BTN_TL2": 0,
-        "BTN_TR": 0
+        "BTN_TR": 0 
     },
     "JOYSTICK": {
         "ABS_X": 128,
