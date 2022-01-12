@@ -5,6 +5,7 @@ from flask_restful import Resource, Api, reqparse, abort
 app = Flask(__name__)
 api = Api(app)
 
+#=========================================
 SYSTEM_ARGS_PUT_API = reqparse.RequestParser()
 SYSTEM_ARGS_PUT_API.add_argument('TIMESTAMP', type=int, help='Time send request.')
 SYSTEM_ARGS_PUT_API.add_argument('IP', type=str, help='IP Address of BKAR.')
@@ -35,45 +36,55 @@ CONTROL_ARGS_PUT_API.add_argument('CONNECTED', type=bool, help='State of connect
 CONTROL_ARGS_PUT_API.add_argument('BUTTON', type=dict, help='State of all button.')
 CONTROL_ARGS_PUT_API.add_argument('AXIS', type=dict, help='State of all axis.')
 
+#=========================================
 SYSTEM = {}
 LIGHT = {}
 KEY = {}
 MOTOR = {}
 SENSOR = {}
 
+#=========================================
 # Views
 @app.route('/')
 def Dashboard():
     return render_template('index.html')
 
-@app.route('/Home')
+#=========================================
+@app.route('/Welcome')
 def Home():
-    return 'Home'
+    return 'Welcome'
 
-@app.route('/Main')
-def Main():
-    return 'Main'
+@app.route('/Connection')
+def Connection():
+    if SYSTEM['CONNECTED']:
+        return redirect(url_for('/Stream'))
+    else:
+        return 'Connection'
+
+@app.route('/Demo')
+def Demo():
+    return 'Demo'
 
 @app.route('/Stream')
 def streamCamera():
     return 'Camera'
 
+#=========================================
 @app.route('/Controller')
 def configControl():
     return render_template('Controller.html')
 
-@app.route('/Connection')
-def Connection():
-    return 'Connection'
-
+#=========================================
 @app.route('/Settings')
 def Settings():
     return 'Settings'
 
+#=========================================
 @app.route('/Information')
 def Information():
     return 'Information'
 
+#=========================================
 # API
 class System(Resource):
     def get(self):
