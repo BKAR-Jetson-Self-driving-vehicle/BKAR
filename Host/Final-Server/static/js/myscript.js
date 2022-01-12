@@ -3,6 +3,8 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     alert("Giao diện không phù hợp cho thiết bị di động, vui lòng truy cập vào bằng thiết bị màn hình lớn!");
 }
 
+
+
 // Time
 function showTime(){
     var date = new Date();
@@ -112,3 +114,34 @@ document.getElementById("SettingsButton").onclick = function SettingsButtonClick
 document.getElementById("InforButton").onclick = function InforButtonClicked(){
     document.getElementById("ScreenFrame").src = "/Information";
 }
+
+// Gamepad api
+function createDictKey(myGamepad){
+    var KEY = {'BUTTON':{}, 'JOYSTICK':{}}
+    for(i=0; i<myGamepad.axes.length; i++){
+        KEY['JOYSTICK'][String(i)]= myGamepad.axes[i];
+    }
+    for(i=0; i<myGamepad.buttons.length; i++){
+        KEY['BUTTON'][String(i)]= myGamepad.buttons[i].value;
+    }
+    return KEY;
+}
+
+function Controller(){
+    const myGamepad = navigator.getGamepads()[0];
+    if(myGamepad != null){
+        KEY = createDictKey(myGamepad);
+        if(myGamepad.connected){
+            // send Key to server
+            console.log(KEY);
+        }
+        else{
+            // send notify msg about disconnected
+        }
+    }
+    else{
+        // send notify msg about disconnected
+    }
+    setTimeout(Controller, 50);
+}
+Controller();

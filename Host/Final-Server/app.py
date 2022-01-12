@@ -25,12 +25,12 @@ MOTOR_ARGS_PUT_API.add_argument('SPEED', type=int, help='Speed of the Car.')
 MOTOR_ARGS_PUT_API.add_argument('A_RATE', type=float, help='Rate speed of motor A.')
 MOTOR_ARGS_PUT_API.add_argument('B_RATE', type=float, help='Rate speed of motor B.')
 
-
 LIGHT_ARGS_PUT_API = reqparse.RequestParser()
 LIGHT_ARGS_PUT_API.add_argument('HEAD', type=bool, help='Head light status.')
 LIGHT_ARGS_PUT_API.add_argument('LEFT', type=bool, help='Left light status.')
 LIGHT_ARGS_PUT_API.add_argument('RIGHT', type=bool, help='Right light status.')
 
+CONTROL_ARGS_PUT_API = reqparse.RequestParser()
 
 
 SYSTEM = {}
