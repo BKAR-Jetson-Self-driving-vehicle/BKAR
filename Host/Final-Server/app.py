@@ -52,7 +52,7 @@ def Dashboard():
 #=========================================
 @app.route('/Welcome')
 def Home():
-    return 'Welcome'
+    return render_template('Welcome.html')
 
 @app.route('/Connection')
 def Connection():
