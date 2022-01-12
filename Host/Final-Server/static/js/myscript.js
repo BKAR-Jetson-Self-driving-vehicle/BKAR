@@ -116,10 +116,11 @@ document.getElementById("InforButton").onclick = function InforButtonClicked(){
 }
 
 // Gamepad api
+const api_control_url = 'http://127.0.0.1:5000/Control';
 function createDictKey(myGamepad){
-    var KEY = {'BUTTON':{}, 'JOYSTICK':{}}
+    var KEY = {'BUTTON':{}, 'AXIS':{}}
     for(i=0; i<myGamepad.axes.length; i++){
-        KEY['JOYSTICK'][String(i)]= myGamepad.axes[i];
+        KEY['AXIS'][String(i)]= myGamepad.axes[i];
     }
     for(i=0; i<myGamepad.buttons.length; i++){
         KEY['BUTTON'][String(i)]= myGamepad.buttons[i].value;
@@ -131,9 +132,19 @@ function Controller(){
     const myGamepad = navigator.getGamepads()[0];
     if(myGamepad != null){
         KEY = createDictKey(myGamepad);
-        if(myGamepad.connected){
-            // send Key to server
-            console.log(KEY);
+        if (myGamepad.connected) {
+            fetch(api_control_url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(KEY)
+            }).then(response => {
+                return response.json()
+            }).then(data =>
+                // this is the data we get after putting our data,
+                console.log(data)
+            );
         }
         else{
             // send notify msg about disconnected
@@ -142,6 +153,6 @@ function Controller(){
     else{
         // send notify msg about disconnected
     }
-    setTimeout(Controller, 50);
+    setTimeout(Controller, 100);
 }
 Controller();

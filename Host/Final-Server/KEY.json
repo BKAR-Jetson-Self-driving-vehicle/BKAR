@@ -1,28 +1,28 @@
 {
     "CONNECTED": true,
     "BUTTON": {
-        "BTN_NORTH": 0,
-        "BTN_SOUTH": 0,
-        "BTN_WEST": 0,
-        "BTN_EAST": 0,
-        "BTN_DPAD_LEFT": 0,
-        "BTN_DPAD_RIGHT": 0,
-        "BTN_DPAD_UP": 0,
-        "BTN_DPAD_DOWN": 0,
-        "BTN_SELECT": 0,
-        "BTN_START": 0,
-        "BTN_MODE": 0,
-        "BTN_THUMBR": 0,
-        "BTN_THUMBL": 0,
-        "BTN_TR2": 0,
-        "BTN_TL": 0,
-        "BTN_TL2": 0,
-        "BTN_TR": 0 
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 0,
+        "16": 0 
     },
-    "JOYSTICK": {
-        "ABS_X": 128,
-        "ABS_Y": 128,
-        "ABS_RX": 128,
-        "ABS_RY": 128
+    "AXIS": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0
     }
 }

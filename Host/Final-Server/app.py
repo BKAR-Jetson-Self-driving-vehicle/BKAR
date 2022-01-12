@@ -31,7 +31,9 @@ LIGHT_ARGS_PUT_API.add_argument('LEFT', type=bool, help='Left light status.')
 LIGHT_ARGS_PUT_API.add_argument('RIGHT', type=bool, help='Right light status.')
 
 CONTROL_ARGS_PUT_API = reqparse.RequestParser()
-
+CONTROL_ARGS_PUT_API.add_argument('CONNECTED', type=bool, help='State of connection')
+CONTROL_ARGS_PUT_API.add_argument('BUTTON', type=dict, help='State of all button.')
+CONTROL_ARGS_PUT_API.add_argument('AXIS', type=dict, help='State of all axis.')
 
 SYSTEM = {}
 LIGHT = {}
@@ -89,7 +91,12 @@ class Control(Resource):
         return KEY
     
     def put(self):
-        return
+        args = CONTROL_ARGS_PUT_API.parse_args()
+        KEY["BUTTON"] = args['BUTTON']
+        KEY["AXIS"] = args['AXIS']
+        if args["CONNECTED"] is not None:
+            KEY['CONNECTED'] = args['CONNECTED']
+        return KEY
 
 class Stream(Resource):
     def get(self):
@@ -148,4 +155,4 @@ if __name__ == '__main__':
     with open('KEY.json', 'r') as f:
         KEY = json.load(f)
 
-    app.run(debug=True)
+    app.run(debug=False)

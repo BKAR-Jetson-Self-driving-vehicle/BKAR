@@ -1,0 +1,27 @@
+{
+    "BUTTON": {
+        "X": 0,
+        "O": 1,
+        "SQUARE": 2,
+        "TRIANGLE": 3,
+        "L1": 4,
+        "R1": 5,
+        "L2": 6,
+        "R2": 7,
+        "SELECT": 8,
+        "START": 9,
+        "LEFT JOYSTICK PRESSED": 10,
+        "RIGHT JOYSTICK PRESSED": 11,
+        "DPAD UP": 12,
+        "DPAD DOWN": 13,
+        "DPAD LEFT": 14,
+        "DPAD RIGHT": 15,
+        "MODE": 16 
+    },
+    "AXIS": {
+        "LEFT JOYSTICK X": 0,
+        "LEFT JOYSTICK Y": 1,
+        "RIGHT JOYSTICK X": 2,
+        "RIGHT JOYSTICK Y": 3
+    }
+}
