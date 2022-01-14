@@ -22,11 +22,20 @@ class ConnectServer:
         self.IP = ''
         self.ServerIP = ''
         self.PORT = 5000
+        self.Connection = False
 
         self.locking = threading.Lock()
         self.server_thread = None
         self.running = False
 
+    # ======================================
+    def start(self):
+        pass
+
+    def ping2Server(self):
+        pass
+
+    # ======================================
     def createConnect(self):
         pass
 
@@ -40,4 +49,8 @@ class ConnectServer:
         pass
 
     def streamVideo(self):
+        pass
+
+    # ======================================
+    def getControl(self):
         pass

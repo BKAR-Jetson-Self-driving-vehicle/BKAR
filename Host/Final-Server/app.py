@@ -47,7 +47,7 @@ SENSOR = {}
 # Views
 @app.route('/')
 def Dashboard():
-    return render_template('index.html')
+    return render_template('Index.html')
 
 #=========================================
 @app.route('/Welcome')
