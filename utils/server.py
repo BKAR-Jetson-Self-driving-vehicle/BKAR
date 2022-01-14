@@ -19,8 +19,9 @@ class ConnectServer:
     """
     """
     def __init__(self):
-        self.IP = ''
-        self.ServerIP = ''
+        self.IP = '192.168.53.112'
+        # self.ServerIP = '192.168.53.112'
+        self.ServerIP = '127.0.0.1'
         self.PORT = 5000
         self.Connection = False
 

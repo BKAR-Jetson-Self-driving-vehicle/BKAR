@@ -45,7 +45,7 @@ async function getSystemData(){
             document.getElementById("distance").innerText = data.DISTANCE + " Km";
         }
         else{
-            document.getElementById("ip-address").innerText = "Disconnected";
+            document.getElementById("ip-address").innerText = "Chưa kết nối";
             document.getElementById("delay").innerText = "-- ms";
             document.getElementById("voltage").innerText = "0 V";
             document.getElementById("distance").innerText = data.DISTANCE + " Km";
