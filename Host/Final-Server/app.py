@@ -5,7 +5,7 @@ from flask_restful import Resource, Api, reqparse, abort
 app = Flask(__name__)
 api = Api(app)
 
-#=========================================
+# =========================================
 SYSTEM_ARGS_PUT_API = reqparse.RequestParser()
 SYSTEM_ARGS_PUT_API.add_argument('TIMESTAMP', type=int, help='Time send request.')
 SYSTEM_ARGS_PUT_API.add_argument('IP', type=str, help='IP Address of BKAR.')
@@ -36,23 +36,26 @@ CONTROL_ARGS_PUT_API.add_argument('CONNECTED', type=bool, help='State of connect
 CONTROL_ARGS_PUT_API.add_argument('BUTTON', type=dict, help='State of all button.')
 CONTROL_ARGS_PUT_API.add_argument('AXIS', type=dict, help='State of all axis.')
 
-#=========================================
+# =========================================
 SYSTEM = {}
 LIGHT = {}
 KEY = {}
 MOTOR = {}
 SENSOR = {}
 
-#=========================================
+
+# =========================================
 # Views
 @app.route('/')
 def Dashboard():
     return render_template('Index.html')
 
-#=========================================
+
+# =========================================
 @app.route('/Welcome')
 def Home():
     return render_template('Welcome.html')
+
 
 @app.route('/Connection')
 def Connection():
@@ -61,35 +64,41 @@ def Connection():
     else:
         return render_template('Connection.html')
 
+
 @app.route('/Demo')
 def Demo():
     return 'Demo'
+
 
 @app.route('/Stream')
 def streamCamera():
     return 'Camera'
 
-#=========================================
+
+# =========================================
 @app.route('/Controller')
 def configControl():
     return render_template('Controller.html')
 
-#=========================================
+
+# =========================================
 @app.route('/Settings')
 def Settings():
     return 'Settings'
 
-#=========================================
+
+# =========================================
 @app.route('/Information')
 def Information():
     return 'Information'
 
-#=========================================
+
+# =========================================
 # API
 class System(Resource):
     def get(self):
         return SYSTEM
-    
+
     def put(self):
         args = SYSTEM_ARGS_PUT_API.parse_args()
         for key in SYSTEM.keys():
@@ -97,10 +106,11 @@ class System(Resource):
                 SYSTEM[key] = args[key]
         return SYSTEM
 
+
 class Control(Resource):
     def get(self):
         return KEY
-    
+
     def put(self):
         args = CONTROL_ARGS_PUT_API.parse_args()
         if args['BUTTON'] is not None:
@@ -111,16 +121,19 @@ class Control(Resource):
             KEY['CONNECTED'] = args['CONNECTED']
         return KEY
 
+
 class Stream(Resource):
     def get(self):
         return
+
     def put(self):
         return
+
 
 class Motor(Resource):
     def get(self):
         return MOTOR
-    
+
     def put(self):
         args = MOTOR_ARGS_PUT_API.parse_args()
         for key in MOTOR.keys():
@@ -128,10 +141,11 @@ class Motor(Resource):
                 MOTOR[key] = args[key]
         return MOTOR
 
+
 class Sensor(Resource):
     def get(self):
         return SENSOR
-    
+
     def put(self):
         args = SENSOR_ARGS_PUT_API.parse_args()
         for key in SENSOR.keys():
@@ -139,16 +153,18 @@ class Sensor(Resource):
                 SENSOR[key] = args[key]
         return SENSOR
 
+
 class Light(Resource):
     def get(self):
         return LIGHT
-    
+
     def put(self):
         args = LIGHT_ARGS_PUT_API.parse_args()
         for key in LIGHT.keys():
             if args[key] is not None:
                 LIGHT[key] = args[key]
         return LIGHT
+
 
 api.add_resource(System, '/System')
 api.add_resource(Control, '/Control')
