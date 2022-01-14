@@ -11,7 +11,8 @@
 """
 
 import os
-from urllib import response
+import time
+import json
 import requests
 import threading
 
@@ -41,26 +42,75 @@ class ConnectServer:
     def createConnect(self):
         pass
 
-    def putMotorStatus(self, Motor=[0, 0], Gas=0):
-        pass
+    # ======================================
+    def putMotorStatus(self, Motor=[0, 0], Speed=0):
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Motor'
+        headers = headers = {'content-type': 'application/json'}
+        data = {"SPEED": Speed, "A_RATE": Motor[0], "B_RATE": Motor[1]}
+        response = requests.put(url=url_api,
+                                data=json.dumps(data),
+                                headers=headers)
+        return response.status_code
 
-    def putLightStatus(self, Lights=[0, 0, 0]):
-        pass
+    def putLightStatus(self, Lights=[False, False, False]):
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Light'
+        headers = headers = {'content-type': 'application/json'}
+        data = {"HEAD": Lights[0], "LEFT": Lights[1], "RIGHT": [2]}
+        response = requests.put(url=url_api,
+                                data=json.dumps(data),
+                                headers=headers)
+        return response.status_code
 
     def putSensorStatus(self, Sensor=[0.0, 0.0, 0.0]):
-        pass
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Sensor'
+        headers = headers = {'content-type': 'application/json'}
+        data = {"X": Sensor[0], "Y": Sensor[1], "Z": Sensor[2]}
+        response = requests.put(url=url_api,
+                                data=json.dumps(data),
+                                headers=headers)
+        return response.status_code
+
+    def putSensorStatus(self, Sensor=[0.0, 0.0, 0.0]):
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Sensor'
+        headers = headers = {'content-type': 'application/json'}
+        data = {"X": Sensor[0], "Y": Sensor[1], "Z": Sensor[2]}
+        response = requests.put(url=url_api,
+                                data=json.dumps(data),
+                                headers=headers)
+        return response.status_code
+
+    def putSystemSatus(self, Distance=0,
+                       Voltage=12.4, TrafficSign="",
+                       Gear="N", Mode="REMOTE"):
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/System'
+        headers = headers = {'content-type': 'application/json'}
+        data = {"TIMESTAMP": time.time(),
+                "IP": self.IP,
+                "CONNECTED": self.Connection,
+                "DISTANCE": Distance,
+                "VOLTAGE": Voltage,
+                "TRAFFIC_SIGN": TrafficSign,
+                "GEAR": Gear,
+                "MODE": Mode}
+        response = requests.put(url=url_api,
+                                data=json.dumps(data),
+                                headers=headers)
+        return response.status_code
 
     def streamVideo(self):
         pass
 
     # ======================================
     def getControl(self):
-        url_api = 'http://127.0.0.1:5000/Control'
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Control'
         response = requests.get(url=url_api)
         Control = response.json()
 
-        STATUS = Control['CONNECTED']
-        BUTTON = Control['BUTTON']
-        AXIS = Control['AXIS']
+        return Control
 
-        return STATUS, BUTTON, AXIS
+    def getSystemData(self):
+        url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/System'
+        response = requests.get(url=url_api)
+        System = response.json()
+
+        return System
