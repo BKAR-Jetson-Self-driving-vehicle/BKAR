@@ -11,6 +11,7 @@
 """
 
 import os
+from urllib import response
 import requests
 import threading
 
@@ -54,4 +55,12 @@ class ConnectServer:
 
     # ======================================
     def getControl(self):
-        pass
+        url_api = 'http://127.0.0.1:5000/Control'
+        response = requests.get(url=url_api)
+        Control = response.json()
+
+        STATUS = Control['CONNECTED']
+        BUTTON = Control['BUTTON']
+        AXIS = Control['AXIS']
+
+        return STATUS, BUTTON, AXIS
