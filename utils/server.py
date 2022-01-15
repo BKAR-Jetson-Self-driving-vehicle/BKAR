@@ -25,7 +25,7 @@ class ConnectServer:
         # self.ServerIP = '192.168.53.112'
         self.ServerIP = '127.0.0.1'
         self.PORT = 5000
-        self.Connection = False
+        self.ConnectStatus = False
 
         self.locking = threading.Lock()
         self.server_thread = None
@@ -86,7 +86,7 @@ class ConnectServer:
         headers = headers = {'content-type': 'application/json'}
         data = {"TIMESTAMP": time.time(),
                 "IP": self.IP,
-                "CONNECTED": self.Connection,
+                "CONNECTED": self.ConnectStatus,
                 "DISTANCE": Distance,
                 "VOLTAGE": Voltage,
                 "TRAFFIC_SIGN": TrafficSign,

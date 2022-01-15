@@ -18,6 +18,21 @@ from utils.Serial import Serial
 from threading import Thread
 
 
+class Comunication:
+    def __init__(self,
+                 ServerConnection=None,
+                 SerialConnection=None):
+        self.LightCodes = ['300', '301', '302', '303']
+        self.MotorCodes = ['200', '201']
+        pass
+
+    def Msg2SensorData(self):
+        pass
+
+    def Key2Control(self):
+        pass
+
+
 class BKAR:
     """
     """
