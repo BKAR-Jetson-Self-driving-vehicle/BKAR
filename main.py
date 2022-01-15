@@ -18,19 +18,97 @@ from utils.Serial import Serial
 from threading import Thread
 
 
-class Comunication:
-    def __init__(self,
-                 ServerConnection=None,
-                 SerialConnection=None):
-        self.LightCodes = ['300', '301', '302', '303']
-        self.MotorCodes = ['200', '201']
+class MOTOR:
+    def __init__(self, SerialCom=None, ServerCom=None):
+        self.__MotorCodes = ['200', '201']
         pass
 
-    def Msg2SensorData(self):
+    def __pushStatus(self):
+        pass
+
+    def __pushControl(self):
+        pass
+
+    def setStatus(self):
+        pass
+
+    def start(self):
+        pass
+
+    def __release(self):
+        pass
+
+    def __del__(self):
+        self.__release()
+
+
+class LIGHT:
+    def __init__(self, SerialCom=None, ServerCom=None):
+        self.__LightCodes = ['300', '301', '302', '303']
+        pass
+
+    def __pushStatus(self):
+        pass
+
+    def __pushControl(self):
+        pass
+
+    def setStatus(self):
+        pass
+
+    def start(self):
+        pass
+
+    def __release(self):
+        pass
+
+    def __del__(self):
+        self.__release()
+
+
+class SENSOR:
+    def __init__(self, SerialCom=None, ServerCom=None):
+        pass
+
+    def __pushStatus(self):
+        pass
+
+    def setStatus(self):
+        pass
+
+    def start(self):
+        pass
+
+    def __release(self):
+        pass
+
+    def __del__(self):
+        self.__release()
+
+
+class SYSTEM:
+    def __init__(self, SerialCom=None, ServerCom=None):
+        pass
+
+    def __release(self):
+        pass
+
+    def __del__(self):
+        self.__release()
+
+
+class GAMEPAD:
+    def __init__(self, SerialCom=None, ServerCom=None):
         pass
 
     def Key2Control(self):
         pass
+
+    def __release(self):
+        pass
+
+    def __del__(self):
+        self.__release()
 
 
 class BKAR:
