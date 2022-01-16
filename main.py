@@ -14,23 +14,36 @@
 import os
 import time
 import threading
-from utils.Serial import Serial
 from threading import Thread
 
 
 class MOTOR:
     def __init__(self, SerialCom=None, ServerCom=None):
         self.__MotorCodes = ['200', '201']
-        pass
+        self.Motor = [0, 0]
+        self.Speed = 0
+        self.Serial = SerialCom
+        self.Server = ServerCom
 
     def __pushStatus(self):
-        pass
+        if self.Server is not None:
+            self.Server.putMotorStatus(Motor=self.Motor,
+                                       Speed=self.Speed)
 
     def __pushControl(self):
-        pass
+        if self.Serial is not None:
+            for code in range(2):
+                CMD = self.__MotorCodes[code]\
+                      + ':'\
+                      + str(self.Motor[code]*self.Speed)
 
-    def setStatus(self):
-        pass
+                self.SerialCom.setCommand(CMD)
+                time.sleep(0.2)
+
+    def setStatus(self, Motor=[0, 0], Speed=0):
+        self.Motor = Motor
+        self.Speed = Speed
+        return
 
     def start(self):
         pass
