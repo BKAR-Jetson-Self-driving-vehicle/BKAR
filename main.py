@@ -53,7 +53,10 @@ class MOTOR:
         pass
 
     def __release(self):
-        pass
+        if self.Serial is not None:
+            self.Serial.release()
+        if self.Server is not None:
+            self.Server.release()
 
     def __del__(self):
         self.__release()
