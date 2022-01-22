@@ -119,7 +119,10 @@ class SYSTEM:
 
 class GAMEPAD:
     def __init__(self, SerialCom=None, ServerCom=None):
-        pass
+        self.KEY = None
+        self.MAP = None
+        self.Serial = SerialCom
+        self.Server = ServerCom
 
     def Key2Control(self):
         pass
