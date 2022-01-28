@@ -29,6 +29,10 @@ class MOTOR:
         self.Serial = SerialCom
         self.Server = ServerCom
 
+        self.running = False
+        self.thread = None
+        self.thread_lock = threading.Lock()
+
     def __pushStatus(self):
         if self.Server is not None:
             self.Server.putMotorStatus(Motor=self.Motor,
@@ -120,11 +124,10 @@ class SYSTEM:
 class GAMEPAD:
     def __init__(self, SerialCom=None, ServerCom=None):
         self.KEY = None
-        self.FUNC = None
         self.Serial = SerialCom
         self.Server = ServerCom
 
-    def Key2Control(self):
+    def start(self):
         pass
 
     def __release(self):
