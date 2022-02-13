@@ -14,9 +14,6 @@ import os
 import time
 import threading
 from threading import Thread
-from utils.Serial import Serial
-from utils.Camera import CSI_Camera
-from utils.Server import ConnectServer
 
 
 class MOTOR:
@@ -30,6 +27,8 @@ class MOTOR:
         self.running = False
         self.thread = Thread(target=self.start, daemon=True)
         self.thread_lock = threading.Lock()
+
+        self.delay = 0.2
 
     def __pushStatus(self):
         if self.Server is not None:
@@ -59,16 +58,25 @@ class MOTOR:
         self.running = True
 
         while self.running:
-            pass
+            try:
+                self.__pushControl()
+            except:
+                print("Cannot control Motor!")
 
-    def __release(self):
-        if self.Serial is not None:
-            self.Serial.release()
-        if self.Server is not None:
-            self.Server.release()
+            try:
+                self.__pushStatus()
+            except:
+                print("Cannot send Motor's data to Server")
+
+            time.sleep(self.delay)
+
+    def stop(self):
+        if self.running:
+            self.running = False
+            self.thread.join()
 
     def __del__(self):
-        self.__release()
+        self.stop()
 
 
 class LIGHT:
