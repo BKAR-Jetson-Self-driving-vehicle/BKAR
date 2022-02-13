@@ -52,7 +52,7 @@ class ConnectServer:
                                 headers=headers)
         return response.status_code
 
-    def putLightStatus(self, Lights=[False, False, False]):
+    def putLightStatus(self, Lights=[False, False, False, False]):
         url_api = 'http://' + self.ServerIP + ':' + str(self.PORT) + '/Light'
         headers = headers = {'content-type': 'application/json'}
         data = {"HEAD": Lights[0], "LEFT": Lights[1], "RIGHT": [2]}
