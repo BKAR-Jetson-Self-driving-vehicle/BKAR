@@ -10,7 +10,6 @@
 +============================================================+
 """
 
-from concurrent.futures import thread
 import os
 import time
 import threading
@@ -47,8 +46,9 @@ class MOTOR:
                 time.sleep(0.2)
 
     def setStatus(self, Motor=[0, 0], Speed=0):
-        self.Motor = Motor
-        self.Speed = Speed
+        with self.thread_lock:
+            self.Motor = Motor
+            self.Speed = Speed
         return
 
     def start(self):
@@ -108,7 +108,11 @@ class LIGHT:
                 self.Serial.setCommand(CMD)
 
     def setStatus(self, LightStatus=[0, 0, 0, 0]):
-        self.__Lights = LightStatus
+        with self.thread_lock:
+            self.__Lights = LightStatus
+
+    def getStatus(self):
+        return self.__Lights
 
     def start(self):
         if self.running:
@@ -141,19 +145,46 @@ class LIGHT:
 
 class SENSOR:
     def __init__(self, SerialCom=None, ServerCom=None):
-        pass
+        self.Sensors = [0.0, 0.0, 0.0]
+
+        self.Serial = SerialCom
+        self.Server = ServerCom
+
+        self.thread = Thread(target=self.start, daemon=True)
+        self.thread_lock = threading.Lock()
+        self.running = False
+
+        self.delay = 0.2
 
     def __pushStatus(self):
-        pass
+        if self.Server is not None:
+            self.Server.putSensorStatus(self.Sensors)
 
-    def setStatus(self):
-        pass
+    def setStatus(self, SensorData):
+        with self.thread_lock:
+            self.Sensors = SensorData
+
+    def getStatus(self):
+        return self.Sensors
 
     def start(self):
-        pass
+        if self.running:
+            print('Sensor thread is running!')
+            return
 
-    def __release(self):
-        pass
+        self.running = True
+        while self.running:
+            try:
+                self.__pushStatus()
+            except:
+                print("Error when send Sensor's data to server!")
+
+            time.sleep(self.delay)
+
+    def release(self):
+        if self.running:
+            self.running = False
+            self.thread.join()
 
     def __del__(self):
-        self.__release()
+        self.release()
