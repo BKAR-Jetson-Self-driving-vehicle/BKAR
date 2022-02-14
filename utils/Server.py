@@ -20,11 +20,13 @@ import threading
 class ConnectServer:
     """
     """
-    def __init__(self):
-        self.IP = '192.168.53.112'
-        # self.ServerIP = '192.168.53.112'
-        self.ServerIP = '127.0.0.1'
-        self.PORT = 5000
+    def __init__(self,
+                 myIP='192.168.53.111',
+                 ServerIP='192.168.53.102',
+                 ServerPort=5000):
+        self.IP = myIP
+        self.ServerIP = ServerIP
+        self.PORT = ServerPort
         self.ConnectStatus = False
 
         self.locking = threading.Lock()
