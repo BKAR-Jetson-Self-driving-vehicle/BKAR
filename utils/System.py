@@ -25,10 +25,10 @@ class MOTOR:
         self.Server = ServerCom
 
         self.running = False
-        self.thread = Thread(target=self.start, daemon=True)
+        self.thread = Thread(target=self.run, daemon=True)
         self.thread_lock = threading.Lock()
 
-        self.delay = 0.2
+        self.delay = 0.01
 
     def __pushStatus(self):
         if self.Server is not None:
@@ -42,13 +42,12 @@ class MOTOR:
                       + ':'\
                       + str(self.Motor[code]*self.Speed)
 
-                self.SerialCom.setCommand(CMD)
-                time.sleep(0.2)
+                self.Serial.setCommand(CMD)
+                time.sleep(self.delay)
 
     def setStatus(self, Motor=[0, 0], Speed=0):
-        with self.thread_lock:
-            self.Motor = Motor
-            self.Speed = Speed
+        self.Motor = Motor
+        self.Speed = Speed
         return
 
     def start(self):
@@ -57,7 +56,10 @@ class MOTOR:
             return
 
         self.running = True
+        self.thread.start()
+        time.sleep(self.delay)
 
+    def run(self):
         while self.running:
             try:
                 self.__pushControl()
@@ -88,11 +90,11 @@ class LIGHT:
         self.Serial = SerialCom
         self.Server = ServerCom
 
-        self.thread = Thread(target=self.start, daemon=True)
+        self.thread = Thread(target=self.run, daemon=True)
         self.thread_lock = threading.Lock()
         self.running = False
 
-        self.delay = 0.2
+        self.delay = 0.01
 
     def __pushStatus(self):
         if self.Server is not None:
@@ -108,8 +110,7 @@ class LIGHT:
                 self.Serial.setCommand(CMD)
 
     def setStatus(self, LightStatus=[0, 0, 0, 0]):
-        with self.thread_lock:
-            self.__Lights = LightStatus
+        self.__Lights = LightStatus
 
     def getStatus(self):
         return self.__Lights
@@ -120,12 +121,15 @@ class LIGHT:
             return
 
         self.running = True
+        self.thread.start()
+        time.sleep(self.delay)
 
+    def run(self):
         while self.running:
             try:
                 self.__pushControl()
             except:
-                print("Cannot control Motor!")
+                print("Cannot control Light!")
 
             try:
                 self.__pushStatus()
@@ -134,13 +138,13 @@ class LIGHT:
 
             time.sleep(self.delay)
 
-    def release(self):
+    def stop(self):
         if self.running:
             self.running = False
             self.thread.join()
 
     def __del__(self):
-        self.release()
+        self.stop()
 
 
 class SENSOR:
@@ -154,7 +158,7 @@ class SENSOR:
         self.thread_lock = threading.Lock()
         self.running = False
 
-        self.delay = 0.2
+        self.delay = 0.01
 
     def __pushStatus(self):
         if self.Server is not None:
@@ -181,10 +185,10 @@ class SENSOR:
 
             time.sleep(self.delay)
 
-    def release(self):
+    def stop(self):
         if self.running:
             self.running = False
             self.thread.join()
 
     def __del__(self):
-        self.release()
+        self.stop()

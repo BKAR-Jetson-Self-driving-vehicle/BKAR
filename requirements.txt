@@ -2,3 +2,5 @@ inputs==0.5
 numpy==1.19.5
 opencv-python==4.5.4.60
 pyserial==3.5
+flask
+flask_restful

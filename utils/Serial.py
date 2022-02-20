@@ -45,7 +45,7 @@ class Serial:
                 cmd = self.__Cmd.pop(0)
                 with self.__lock:
                     self.__arduino.write((cmd + '\n').encode())
-            time.sleep(0.01)
+            time.sleep(0.005)
 
             if not self.__running:
                 break
@@ -57,7 +57,7 @@ class Serial:
                     serial_msg = self.__arduino.read_until()
                     if serial_msg != '\n':
                         self.__Msg = serial_msg.decode("utf-8")
-            time.sleep(0.01)
+            time.sleep(0.005)
 
             if not self.__running:
                 break
