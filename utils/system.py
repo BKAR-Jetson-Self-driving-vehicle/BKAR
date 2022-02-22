@@ -15,8 +15,31 @@ import threading
 import Jetson.GPIO as GPIO
 
 
+# Configuring the connection pins
+# MOTOR
+IN1 = 36
+IN2 = 32
+IN3 = 35
+IN4 = 33
+
+# SENSOR
+SCL = 5
+SDA = 3
+
+# LIGHT
+
+
 class Motor:
     def __init__(self) -> None:
+        pass
+
+    def moveLeft(self, speed):
+        pass
+
+    def moveRight(self, speed):
+        pass
+
+    def stopMotors(self, speed):
         pass
 
 
