@@ -1,6 +1,7 @@
+Flask==2.0.2
+Flask-RESTful==0.3.9
 inputs==0.5
+Jetson.GPIO==2.0.17
 numpy==1.19.5
 opencv-python==4.5.4.60
-pyserial==3.5
-flask
-flask_restful
+requests==2.27.1
