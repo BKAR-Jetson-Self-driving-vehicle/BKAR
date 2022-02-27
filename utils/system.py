@@ -31,15 +31,25 @@ SDA = 3
 
 class Motor:
     def __init__(self) -> None:
+        left_motor = []
+        left_speed = 0
+
+        right_motor = []
+        right_speed = 0
+
+    def UP(self, speed):
         pass
 
-    def moveLeft(self, speed):
+    def goBack(self, speed):
         pass
 
-    def moveRight(self, speed):
+    def spinLeft(self, speed):
         pass
 
-    def stopMotors(self, speed):
+    def spinRight(self, speed):
+        pass
+
+    def stop(self):
         pass
 
 
@@ -50,6 +60,12 @@ class Sensor:
 
 class Light:
     def __init__(self) -> None:
+        pass
+
+    def turnOn(self, LightId):
+        pass
+
+    def turnOff(self, LightID):
         pass
 
 
