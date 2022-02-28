@@ -14,6 +14,7 @@ import time
 import Jetson.GPIO as GPIO
 
 GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
 
 
 class Light:
@@ -25,14 +26,12 @@ class Light:
     ---
     - Chân kết nối pins: List tên các chân tương ứng với
         các đèn [Head, Stop, Left, Right]
-    - Kiểu loại tên các chân kết nối: GPIO.BCM/GPIO.BOARD,
     """
-    def __init__(self, pins=[24, 23, 8, 7], mode=GPIO.BCM):
+    def __init__(self, pins=[24, 23, 8, 7]):
         self.Status = [0, 0, 0, 0]
 
         self.PINs = pins
 
-        GPIO.setmode(mode)
         for pin in self.PINs:
             GPIO.setup(pin, GPIO.OUT, initial=GPIO.HIGH)
 
