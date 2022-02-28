@@ -13,13 +13,26 @@
 import time
 import Jetson.GPIO as GPIO
 
+GPIO.setwarnings(False)
+
 
 class Light:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, pins=[24, 23, 8, 7], mode=GPIO.BCM):
+        self.Status = [0, 0, 0, 0]
 
-    def turnOn(self, LightId):
-        pass
+        self.PINs = pins
+        self.mode = mode
+
+        GPIO.setmode(self.mode)
+        for pin in self.PINs:
+            GPIO.setup(pin, GPIO.OUT, initial=GPIO.HIGH)
+
+    def turnOn(self, LightID):
+        if self.Status[LightID] == 0:
+            self.Status[LightID] = 1
+            GPIO.output(self.PINs[LightID], GPIO.LOW)
 
     def turnOff(self, LightID):
-        pass
+        if self.Status[LightID] == 1:
+            self.Status[LightID] = 0
+            GPIO.output(self.PINs[LightID], GPIO.HIGH)
