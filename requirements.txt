@@ -2,6 +2,8 @@ Flask==2.0.2
 Flask-RESTful==0.3.9
 inputs==0.5
 Jetson.GPIO==2.0.17
+mpu6050-raspberrypi==1.2
 numpy==1.19.5
 opencv-python==4.5.4.60
 requests==2.27.1
+smbus==1.1.post2
