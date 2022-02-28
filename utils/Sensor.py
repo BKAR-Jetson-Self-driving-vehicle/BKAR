@@ -10,6 +10,7 @@
 +============================================================+
 """
 
+import os
 import time
 from mpu6050 import mpu6050
 
@@ -110,3 +111,14 @@ class Sensor:
         ========================
         """
         self.timeout = timeout
+
+
+if __name__ == '__main__':
+    ss = Sensor()
+    while True:
+        print(ss.getAccel())
+        print(ss.getGyro())
+        print(ss.getTemp())
+        print("="*60)
+        time.sleep(0.2)
+        os.system('clear')
