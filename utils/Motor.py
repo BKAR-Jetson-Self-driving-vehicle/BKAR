@@ -11,6 +11,7 @@
 """
 
 import time
+from turtle import speed
 import Jetson.GPIO as GPIO
 
 GPIO.setwarnings(False)
@@ -20,8 +21,8 @@ GPIO.setmode(GPIO.BOARD)
 class Robot():
     def __init__(self, *args, **kwargs):
         super(Robot, self).__init__(*args, **kwargs)
-        self.left_motor = [35, 36]
-        self.right_motor = [37, 38]
+        self.left_motor = [36, 38]
+        self.right_motor = [37, 35]
         self.left_speed = 0
         self.right_speed = 0
         GPIO.setup(32, GPIO.OUT)
@@ -39,26 +40,27 @@ class Robot():
         GPIO.output(self.right_motor[0], GPIO.HIGH)
         self.left_speed = ((left_speed - (-1))/2)*100
         self.right_speed = ((right_speed - (-1))/2)*100
-        print()
-        print()
+
         self.pwm[0].ChangeDutyCycle(self.left_speed)
         self.pwm[1].ChangeDutyCycle(self.right_speed)
 
-    def forward(self, speed=1.0, duration=None):
+    def down(self, speed=1.0, duration=None):
         GPIO.output(self.left_motor[0], GPIO.HIGH)
         GPIO.output(self.right_motor[0], GPIO.HIGH)
         GPIO.output(self.left_motor[1], GPIO.LOW)
         GPIO.output(self.right_motor[1], GPIO.LOW)
         self.speed = ((speed - (-1))/2)*100
+
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
-    def backward(self, speed=1.0):
+    def up(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.LOW)
         GPIO.output(self.right_motor[0], GPIO.LOW)
         GPIO.output(self.left_motor[1], GPIO.HIGH)
         GPIO.output(self.right_motor[1], GPIO.HIGH)
         self.speed = ((speed - (-1))/2)*100
+
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
@@ -68,6 +70,7 @@ class Robot():
         GPIO.output(self.left_motor[1], GPIO.HIGH)
         GPIO.output(self.right_motor[1], GPIO.LOW)
         self.speed = ((speed - (-1))/2)*100
+
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
@@ -77,6 +80,7 @@ class Robot():
         GPIO.output(self.left_motor[1], GPIO.LOW)
         GPIO.output(self.right_motor[1], GPIO.HIGH)
         self.speed = ((speed - (-1))/2)*100
+
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
@@ -87,9 +91,21 @@ class Robot():
         GPIO.output(self.right_motor[1], GPIO.LOW)
         self.left_speed = 0
         self.right_speed = 0
+
         self.pwm[0].ChangeDutyCycle(self.left_speed)
         self.pwm[1].ChangeDutyCycle(self.right_speed)
 
 
 if __name__ == '__main__':
-    pass
+    rb = Robot()
+    speed = 1
+    count = 1
+    while True:
+        count += 1
+        for i in range(-9, 10, 1):
+            speed = i*0.1
+            rb.up(speed)
+            time.sleep(0.1)
+        if count == 10:
+            break
+    rb.stop()
