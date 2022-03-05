@@ -11,7 +11,6 @@
 """
 
 import time
-from turtle import speed
 import Jetson.GPIO as GPIO
 
 GPIO.setwarnings(False)
