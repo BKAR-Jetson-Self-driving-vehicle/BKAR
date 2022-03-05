@@ -12,9 +12,15 @@
 
 import time
 import threading
-import Jetson.GPIO as GPIO
+from . import Light, Sensor, Server, Camera
 
 
-class System:
+class BKAR:
     def __init__(self) -> None:
-        pass
+        self.Sensor = [0.0, 0.0, 0.0]
+        self.Light = [0, 0, 0, 0]
+        self.Speed = 0.0
+
+        self.ServerModule = None
+        self.MotorModule = None
+        self.LightModule = None
