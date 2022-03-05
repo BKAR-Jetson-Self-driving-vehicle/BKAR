@@ -20,10 +20,14 @@ GPIO.setmode(GPIO.BOARD)
 class Motor():
     def __init__(self, *args, **kwargs):
         super(Motor, self).__init__(*args, **kwargs)
-        self.left_motor = [36, 38]
-        self.right_motor = [37, 35]
+
+        # Speed values
         self.left_speed = 0
         self.right_speed = 0
+
+        # Config pins connection
+        self.left_motor = [36, 38]
+        self.right_motor = [37, 35]
         GPIO.setup(32, GPIO.OUT)
         GPIO.setup(33, GPIO.OUT)
         self.pwm = [GPIO.PWM(32, 50), GPIO.PWM(33, 50)]
@@ -43,7 +47,7 @@ class Motor():
         self.pwm[0].ChangeDutyCycle(self.left_speed)
         self.pwm[1].ChangeDutyCycle(self.right_speed)
 
-    def down(self, speed=1.0, duration=None):
+    def down(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.HIGH)
         GPIO.output(self.right_motor[0], GPIO.HIGH)
         GPIO.output(self.left_motor[1], GPIO.LOW)
