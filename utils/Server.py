@@ -21,10 +21,8 @@ class ConnectServer:
     """
     """
     def __init__(self,
-                 myIP='192.168.53.111',
-                 ServerIP='192.168.53.102',
+                 ServerIP='192.168.53.111',
                  ServerPort=5000):
-        self.IP = myIP
         self.ServerIP = ServerIP
         self.PORT = ServerPort
         self.ConnectStatus = False
@@ -35,13 +33,6 @@ class ConnectServer:
 
     # ======================================
     def start(self):
-        pass
-
-    def ping2Server(self):
-        pass
-
-    # ======================================
-    def createConnect(self):
         pass
 
     # ======================================

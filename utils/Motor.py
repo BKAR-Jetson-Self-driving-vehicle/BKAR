@@ -18,9 +18,9 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
 
-class Robot():
+class Motor():
     def __init__(self, *args, **kwargs):
-        super(Robot, self).__init__(*args, **kwargs)
+        super(Motor, self).__init__(*args, **kwargs)
         self.left_motor = [36, 38]
         self.right_motor = [37, 35]
         self.left_speed = 0
@@ -97,15 +97,15 @@ class Robot():
 
 
 if __name__ == '__main__':
-    rb = Robot()
+    mt = Motor()
     speed = 1
     count = 1
     while True:
         count += 1
         for i in range(-9, 10, 1):
             speed = i*0.1
-            rb.up(speed)
+            mt.up(speed)
             time.sleep(0.1)
-        if count == 10:
+        if count == 5:
             break
-    rb.stop()
+    mt.stop()
