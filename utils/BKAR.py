@@ -22,5 +22,19 @@ class BKAR:
         self.Speed = 0.0
 
         self.ServerModule = None
+        self.SensorModule = None
         self.MotorModule = None
         self.LightModule = None
+
+        self.Locking = threading.Lock()
+        self.thread = threading.Thread(target=self.run, daemon=True)
+        self.running = False
+
+    def start(self):
+        pass
+
+    def run(self):
+        pass
+
+    def stop(self):
+        pass
