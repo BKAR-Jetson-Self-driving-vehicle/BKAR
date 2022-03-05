@@ -1,8 +1,8 @@
 {
     "SYSTEM":{
         "TIMESTAMP": 1641682849248,
-        "IP": "192.168.53.113",
-        "CONNECTED": false,
+        "IP": "192.168.53.111",
+        "CONNECTED": true,
         "DISTANCE": 100,
         "VOLTAGE": 12.4,
         "TRAFFIC_SIGN": "STOP",

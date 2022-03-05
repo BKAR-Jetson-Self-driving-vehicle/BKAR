@@ -32,7 +32,7 @@ function showTime(){
 showTime();
 
 // System Information
-const api_system_url = 'http://127.0.0.1:5000/System';
+const api_system_url = 'http://192.168.53.111:5000/System';
 async function getSystemData(){
     try{
         const response = await fetch(api_system_url);
@@ -58,8 +58,8 @@ async function getSystemData(){
 getSystemData();
 
 // Footer status bar
-const api_motor_url = 'http://127.0.0.1:5000/Motor';
-const api_sensor_url = 'http://127.0.0.1:5000/Sensor';
+const api_motor_url = 'http://192.168.53.111:5000/Motor';
+const api_sensor_url = 'http://192.168.53.111:5000/Sensor';
 async function getFooterData(){
     try{
         const response_motor = await fetch(api_motor_url);
@@ -82,7 +82,7 @@ async function getFooterData(){
 getFooterData();
 
 // Light status
-const api_light_url = 'http://127.0.0.1:5000/Light';
+const api_light_url = 'http://192.168.53.111:5000/Light';
 async function getLightData(){
     try{
         const response_light = await fetch(api_light_url);
@@ -116,7 +116,7 @@ document.getElementById("InforButton").onclick = function InforButtonClicked(){
 }
 
 // Gamepad api
-const api_control_url = 'http://127.0.0.1:5000/Control';
+const api_control_url = 'http://192.168.53.111:5000/Control';
 function createDictKey(myGamepad){
     var KEY = {'BUTTON':{}, 'AXIS':{}}
     for(i=0; i<myGamepad.axes.length; i++){
