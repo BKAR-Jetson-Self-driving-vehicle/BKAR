@@ -17,9 +17,9 @@ from . import Light, Sensor, Server, Camera
 
 class BKAR:
     def __init__(self) -> None:
-        self.Sensor = [0.0, 0.0, 0.0]
-        self.Light = [0, 0, 0, 0]
-        self.Speed = 0.0
+        self.__Sensor = [0.0, 0.0, 0.0]
+        self.__Light = [0, 0, 0, 0]
+        self.__Speed = 0.0
 
         self.ServerModule = None
         self.SensorModule = None

@@ -48,10 +48,6 @@ class CSI_Camera:
             self.read_thread.start()
         return self
 
-    def stop(self):
-        self.running = False
-        self.read_thread.join()
-
     def updateCamera(self):
         while self.running:
             try:
@@ -187,15 +183,14 @@ class BKAR_Cameras:
         self.running = False
         if self.BKARCam_threading is not None:
             self.BKARCam_threading.join()
-        self.leftCam.stop()
         self.leftCam.release()
-        self.rightCam.stop()
         self.rightCam.release()
 
 
 if __name__ == '__main__':
     bk_cam = BKAR_Cameras()
     bk_cam.startBKARCameras()
-    left, _ = bk_cam.getFrame()
-    time.sleep(10)
+    time.sleep(1)
+    LF, RF = bk_cam.getFrame()
+    cv2.imwrite('camera.jpg', LF)
     bk_cam.release()
