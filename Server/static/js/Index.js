@@ -100,7 +100,7 @@ getLightData();
 
 // Main Frame Navigation Buttons
 document.getElementById("HomeButton").onclick = function HomeButtonClicked(){
-    document.getElementById("ScreenFrame").src = "/Connection";
+    document.getElementById("ScreenFrame").src = "/Stream";
 }
 
 document.getElementById("ControllerButton").onclick = function ControllerButtonClicked(){

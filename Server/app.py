@@ -1,5 +1,8 @@
+import os
+import io
+import cv2
 import json
-from flask import Flask, redirect, request, url_for, render_template
+from flask import Flask, redirect, request, url_for, render_template, Response
 from flask_restful import Resource, Api, reqparse, abort
 
 app = Flask(__name__)
@@ -97,11 +100,31 @@ def Connection():
 def Demo():
     return 'Demo'
 
-
+# =========================================
 @app.route('/Stream')
-def streamCamera():
-    return 'Camera'
+def Stream():
+    """Video streaming home page."""
+    return render_template('stream.html')
 
+def gen():
+    """Video streaming generator function."""
+    # vc = cv2.VideoCapture(0)
+    vc = cv2.VideoCapture('/mnt/sdb1/Videos/video ky yeu 12A4.mp4')
+    while True:
+        read_return_code, frame = vc.read()
+        encode_return_code, image_buffer = cv2.imencode('.jpg', frame)
+        io_buf = io.BytesIO(image_buffer)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + io_buf.read() + b'\r\n')
+
+
+@app.route('/video_stream')
+def video_stream():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(
+        gen(),
+        mimetype='multipart/x-mixed-replace; boundary=frame'
+    )
 
 # =========================================
 @app.route('/Controller')

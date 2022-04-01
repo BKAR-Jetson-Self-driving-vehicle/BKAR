@@ -1,0 +1,13 @@
+body {
+    background-color: black;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+  }
+  img {
+    display: block;
+    padding-top: auto;
+    padding-bottom: auto;
+    width: 100%;
+    height: auto;
+    border-radius: 3%;
+  }
