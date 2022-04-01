@@ -3,13 +3,13 @@
 
 """
 +============================================================+
-- Author: Thanh HoangVan
-- School of Applied Mathematics and Informatics(SAMI of HUST)
+- Tác Giả: Hoàng Thành
+- Viện Toán Ứng dụng và Tin học(SAMI - HUST)
 - Email: thanh.hoangvan051199@gmail.com
 - Github: https://github.com/thanhhoangvan
 +============================================================+
 
-https://github.com/JetsonHacksNano/CSI-Camera
+Tham khảo: https://github.com/JetsonHacksNano/CSI-Camera
 
 # Requirement:
 - Opencv with Gstreamer
@@ -18,7 +18,6 @@ import os
 import cv2
 import time
 import threading
-
 
 def gstreamer_pipeline(sensor_id=0,
                        capture_width=1920, capture_height=1080,

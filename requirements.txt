@@ -7,3 +7,4 @@ numpy==1.19.*
 opencv-python==4.5.4.60
 requests==2.27.1
 smbus==1.1.post2
+sockets
