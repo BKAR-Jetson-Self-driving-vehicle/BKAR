@@ -34,7 +34,7 @@ class FrameSegment(object):
     """
     MAX_DGRAM = 2**16
     MAX_IMAGE_DGRAM = MAX_DGRAM - 64 # extract 64 bytes in case UDP frame overflown
-    def __init__(self, sock, port, addr="192.168.53.112"):
+    def __init__(self, sock, port, addr="192.168.53.102"):
         self.s = sock
         self.port = port
         self.addr = addr
@@ -74,12 +74,12 @@ class ConnectServer:
     def __init__(self,
                  ServerIP='192.168.53.102',
                  ServerPort=5000,
-                 StereoCamInstance=None,,
+                 StereoCamInstance=None,
                  StreamPort=8000):
-        self.MyIP = '192.168.0.0'
+        self.MyIP = '192.168.53.112'
         self.ServerIP = ServerIP
         self.PORT = ServerPort
-        self.ConnectStatus = False
+        self.ConnectStatus = True
 
         self.StereoCamera = StereoCamInstance
         self.StreamPort = StreamPort
