@@ -61,6 +61,15 @@ class FrameSegment(object):
 
 class ConnectServer:
     """
+    Lớp giao tiếp với Server Flask điều khiển BKAR
+    ==============================================
+
+    Tham số
+    ---
+    - ServerIP: Địa chỉ IP của Server
+    - ServerPort: Cổng giao tiếp với Server
+    - StereoCamInstance: Thực thể của lớp StereoCamera lấy dữ liệu từ IMX219
+    - StreamPort: Cổng gửi luồng Stream UDP
     """
     def __init__(self,
                  ServerIP='192.168.53.102',
