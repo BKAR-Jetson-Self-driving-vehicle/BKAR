@@ -12,7 +12,7 @@
 
 import time
 import threading
-from . import Light, Sensor, Server, Camera
+from .core import Light, Sensor, Server, Camera
 
 
 class BKAR:

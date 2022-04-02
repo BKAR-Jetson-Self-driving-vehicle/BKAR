@@ -13,17 +13,6 @@
 import os
 import time
 import threading
-from threading import Thread
-from utils.Camera import CSI_Camera
-from utils.Server import ConnectServer
-
-
-class BKAR:
-    """
-    """
-    def __init__(self):
-        pass
-
 
 if __name__ == '__main__':
     pass
