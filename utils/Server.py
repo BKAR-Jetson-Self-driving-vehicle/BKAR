@@ -105,7 +105,7 @@ class ConnectServer:
             self.videoStream = threading.Thread(target=self.streamVideo, daemon=True)
             self.streamming = True
             time.sleep(1.5)
-            self.streamming = True
+            self.videoStream.start()
 
     # ======================================
     def checkConnection(self):
@@ -177,11 +177,10 @@ class ConnectServer:
         address = self.ServerIP
 
         fs = FrameSegment(s, port, addr=address)
-
         while self.streamming:
             frame1, frame2 = self.StereoCamera.read()
             if frame1 is not None:
-            fs.udp_frame(frame1)
+                fs.udp_frame(frame1)
 
         s.close()
 
