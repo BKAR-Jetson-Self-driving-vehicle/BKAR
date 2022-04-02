@@ -199,3 +199,17 @@ class ConnectServer:
         System = response.json()
 
         return System
+
+    # ======================================
+    def stop(self):
+        if self.running == True:
+            self.running = False
+        time.sleep(0.5)
+        if self.serverThread is not None:
+            self.serverThread.join()
+        
+        if self.streamming == True:
+            self.streamming = False
+        time.sleep(0.5)
+        if self.videoThread is not None:
+            self.videoThread.join()
