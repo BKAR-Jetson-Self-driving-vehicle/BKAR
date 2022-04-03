@@ -12,7 +12,6 @@
 
 import time
 import threading
-from .core import Light, Sensor, Server, Camera
 
 
 class BKAR:
@@ -23,8 +22,9 @@ class BKAR:
 
         self.ServerModule = None
         self.SensorModule = None
-        self.MotorModule = None
-        self.LightModule = None
+        self.MotorModule  = None
+        self.LightModule  = None
+        self.CameraModule = None
 
         self.Locking = threading.Lock()
         self.thread = threading.Thread(target=self.run, daemon=True)
