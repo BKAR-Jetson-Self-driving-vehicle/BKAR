@@ -12,11 +12,30 @@
 
 import os
 import time
+import threading
 from .core import *
 
 
 class Control:
     def __init__(self) -> None:
+        self.Light = None
+        self.Sensor = None
+        self.Motor = None
+        self.Key = None
+
+    def start(self):
+        pass
+
+    def controlLight(self):
+        pass
+
+    def controlMotor(self, ):
+        pass
+
+    def controlSensor(self):
+        pass
+   
+    def controlKey(self):
         pass
 
 

@@ -12,19 +12,15 @@
 
 import time
 import threading
-
+import Control, Autopilot, AI
 
 class BKAR:
     def __init__(self) -> None:
-        self.__Sensor = [0.0, 0.0, 0.0]
-        self.__Light = [0, 0, 0, 0]
-        self.__Speed = 0.0
+        self.angle = 0
+        self.speed = 0
+        self.motor = [0, 0]
 
-        self.ServerModule = None
-        self.SensorModule = None
-        self.MotorModule  = None
-        self.LightModule  = None
-        self.CameraModule = None
+        self.DriveMode = "REMOTE"
 
         self.Locking = threading.Lock()
         self.thread = threading.Thread(target=self.run, daemon=True)
@@ -37,4 +33,10 @@ class BKAR:
         pass
 
     def stop(self):
+        pass
+    
+    def driverByHand(self):
+        pass
+    
+    def driverByAI(self):
         pass
