@@ -44,3 +44,12 @@ class Light:
         if self.Status[LightID] == 1:
             self.Status[LightID] = 0
             GPIO.output(self.PINs[LightID], GPIO.HIGH)
+
+if __name__=='__main__':
+    Lg = Light()
+    for i in range(5):
+        for ID in range(4):
+            Lg.turnOn(ID)
+            time.sleep(0.5)
+            Lg.turnOff(ID)
+            time.sleep(0.5)
