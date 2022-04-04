@@ -8,6 +8,12 @@
 - Email: thanh.hoangvan051199@gmail.com
 - Github: https://github.com/thanhhoangvan
 +============================================================+
+
+# Cấu hình PMW Port GPIO Jetson Nano:
+- Chạy lệnh"
+$ sudo /opt/nvidia/jetson-io/jetson-io.py
+- Kích hoạt 2 cặp chân PMW trên GPIO
+- Khởi động lại
 """
 
 import time
