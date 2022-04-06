@@ -13,12 +13,13 @@
 import time
 import threading
 import Control, Autopilot, AI
+from core.Light import Light
+from core.Motor import Motor
 
 class BKAR:
     def __init__(self) -> None:
-        self.angle = 0
-        self.speed = 0
-        self.motor = [0, 0]
+        self.Speed = 0
+        self.MoveMode = 0 # 0-stop, 1-go ahead, -1-go back, 2-turn left, 3-turn right
 
         self.DriveMode = "REMOTE"
 
