@@ -32,8 +32,10 @@ class Motor():
         self.right_speed = 0
 
         # Config pins connection
-        self.left_motor = [36, 38]
-        self.right_motor = [37, 35]
+#        self.left_motor = [36, 38]
+#        self.right_motor = [37, 35]
+        self.left_motor = [38, 36]
+        self.right_motor = [35, 37]
         GPIO.setup(32, GPIO.OUT)
         GPIO.setup(33, GPIO.OUT)
         self.pwm = [GPIO.PWM(32, 50), GPIO.PWM(33, 50)]
@@ -129,6 +131,6 @@ if __name__ == '__main__':
             speed = i*0.1
             mt.up(speed)
             time.sleep(0.1)
-        if count == 5:
+        if count == 3:
             break
     mt.stop()

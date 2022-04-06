@@ -1,4 +1,4 @@
-#!../venv/bin/python3
+#!../../venv/bin/python
 # -*- coding: utf-8 -*-
 
 """
@@ -11,6 +11,7 @@
 """
 
 import time
+import threading
 import Jetson.GPIO as GPIO
 
 GPIO.setwarnings(False)
@@ -18,7 +19,6 @@ GPIO.setmode(GPIO.BCM)
 
 ON = GPIO.LOW
 OFF = GPIO.HIGH
-
 
 class Light:
     """
@@ -32,11 +32,77 @@ class Light:
     """
     def __init__(self, pins=[23, 24, 8, 7]):
         self.Status = [0, 0, 0, 0]
-
+        self.MODE = {
+            'TURN': 0, # 0-OFF, 1:RIGHT, 2: LEFT, 3:GO AHEAD
+            'NIGHT': 0, # 0-DAY, 1-NIGHT, control HEAD light
+            'STOP': 0, #0-OFF, 1-ON, control read light in back
+        }
         self.PINs = pins
 
         for pin in self.PINs:
             GPIO.setup(pin, GPIO.OUT, initial=OFF)
+        
+        self.thread_light = None
+        self.running = False
+        self.lock_light = threading.Lock()
+
+    def start(self):
+        self.turnOffAll()
+        if self.thread_light is None:
+            self.running = True
+            self.thread_light = threading.Thread(target=self.run, daemon=True)
+            self.thread_turn = threading.Thread(target=self.runTurning, daemon=True)
+            self.thread_light.start()
+            self.thread_turn.start()
+
+    def stop(self):
+        self.turnOffAll()
+        if self.running:
+            self.running = False
+            self.thread_light.join()
+            self.thread_turn.join()
+
+    def setMODE(self, mode, value):
+        self.MODE[mode] = value
+
+    def run(self):
+        while self.running:
+            if self.MODE['STOP'] == 1:
+                self.turnOn(1)
+            else:
+                self.turnOff(1)
+            
+            if self.MODE['NIGHT'] == 1:
+                self.turnOn(0)
+            else:
+                self.turnOff(0)
+
+            time.sleep(0.1)
+    
+    def runTurning(self):
+        while self.running:
+            if self.MODE['TURN'] == 1:
+                self.turnOn(3)
+                time.sleep(0.2)
+                self.turnOff(3)
+                time.sleep(0.2)
+            elif self.MODE['TURN'] == 2:
+                self.turnOn(2)
+                time.sleep(0.2)
+                self.turnOff(2)
+                time.sleep(0.2)
+            elif self.MODE['TURN'] == 3:
+                self.turnOn(2)
+                self.turnOn(3)
+                time.sleep(0.2)
+                self.turnOff(2)
+                self.turnOff(3)
+                time.sleep(0.2)
+            else:
+                self.turnOff(2)
+                self.turnOff(2)
+                time.sleep(0.2)
+
 
     def turnOn(self, LightID):
         if self.Status[LightID] == 0:
@@ -48,30 +114,10 @@ class Light:
             self.Status[LightID] = 0
             GPIO.output(self.PINs[LightID], OFF)
     
-    def TurnLeft(self):
-        self.turnOff(2)
-        while True:
-            self.turnOn(3)
-            time.sleep(0.2)
-            self.turnOff(3)
-            time.sleep(0.2)
-
-    def TurnRight(self):
-        self.turnOff(3)
-        while True:
-            self.turnOn(2)
-            time.sleep(0.2)
-            self.turnOff(2)
-            time.sleep(0.2)
-            time.sleep(0.2)
-    
-    def TurnOffAll(self):
+    def turnOffAll(self):
         for i in range(4):
             self.turnOff(i)
 
-    def NightMode(self):
-        self.turnOn(0)
-        self.turnOn(1)
 
 if __name__=='__main__':
     Lg = Light()
@@ -81,4 +127,4 @@ if __name__=='__main__':
             time.sleep(0.1)
             Lg.turnOff(ID)
             time.sleep(0.1)
-    Lg.TurnOffAll()
+    Lg.turnOffAll()
