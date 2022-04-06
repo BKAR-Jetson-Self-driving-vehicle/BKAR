@@ -37,16 +37,20 @@ class Motor():
         GPIO.setup(32, GPIO.OUT)
         GPIO.setup(33, GPIO.OUT)
         self.pwm = [GPIO.PWM(32, 50), GPIO.PWM(33, 50)]
+        
         GPIO.setup(self.left_motor[0], GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.right_motor[0], GPIO.OUT, initial=GPIO.LOW)
+
         GPIO.setup(self.left_motor[1], GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.right_motor[1], GPIO.OUT, initial=GPIO.LOW)
+        
         self.pwm[0].start(0)
         self.pwm[1].start(0)
 
     def set_motors(self, left_speed=1.0, right_speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.HIGH)
         GPIO.output(self.right_motor[0], GPIO.HIGH)
+       
         self.left_speed = ((left_speed - (-1))/2)*100
         self.right_speed = ((right_speed - (-1))/2)*100
 
@@ -56,8 +60,10 @@ class Motor():
     def down(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.HIGH)
         GPIO.output(self.right_motor[0], GPIO.HIGH)
+       
         GPIO.output(self.left_motor[1], GPIO.LOW)
         GPIO.output(self.right_motor[1], GPIO.LOW)
+       
         self.speed = ((speed - (-1))/2)*100
 
         self.pwm[0].ChangeDutyCycle(self.speed)
@@ -66,8 +72,10 @@ class Motor():
     def up(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.LOW)
         GPIO.output(self.right_motor[0], GPIO.LOW)
+       
         GPIO.output(self.left_motor[1], GPIO.HIGH)
         GPIO.output(self.right_motor[1], GPIO.HIGH)
+       
         self.speed = ((speed - (-1))/2)*100
 
         self.pwm[0].ChangeDutyCycle(self.speed)
@@ -76,8 +84,10 @@ class Motor():
     def left(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.LOW)
         GPIO.output(self.right_motor[0], GPIO.HIGH)
+       
         GPIO.output(self.left_motor[1], GPIO.HIGH)
         GPIO.output(self.right_motor[1], GPIO.LOW)
+       
         self.speed = ((speed - (-1))/2)*100
 
         self.pwm[0].ChangeDutyCycle(self.speed)
@@ -86,8 +96,10 @@ class Motor():
     def right(self, speed=1.0):
         GPIO.output(self.left_motor[0], GPIO.HIGH)
         GPIO.output(self.right_motor[0], GPIO.LOW)
+       
         GPIO.output(self.left_motor[1], GPIO.LOW)
         GPIO.output(self.right_motor[1], GPIO.HIGH)
+       
         self.speed = ((speed - (-1))/2)*100
 
         self.pwm[0].ChangeDutyCycle(self.speed)
@@ -96,8 +108,10 @@ class Motor():
     def stop(self):
         GPIO.output(self.left_motor[0], GPIO.LOW)
         GPIO.output(self.right_motor[0], GPIO.LOW)
+       
         GPIO.output(self.left_motor[1], GPIO.LOW)
         GPIO.output(self.right_motor[1], GPIO.LOW)
+       
         self.left_speed = 0
         self.right_speed = 0
 

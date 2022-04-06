@@ -21,10 +21,14 @@ class Control:
         self.Light = None
         self.Sensor = None
         self.Motor = None
+        self.Camera = None
         self.Key = None
 
+        self.thread_control = 
+
     def start(self):
-        pass
+        self.Light = Light.Light()
+        self.Motor = Motor.Motor()
 
     def controlLight(self):
         pass

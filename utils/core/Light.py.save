@@ -16,9 +16,6 @@ import Jetson.GPIO as GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-ON = GPIO.LOW
-OFF = GPIO.HIGH
-
 
 class Light:
     """
@@ -30,28 +27,28 @@ class Light:
     - Chân kết nối pins: List tên các chân tương ứng với
         các đèn [Head, Stop, Left, Right]
     """
-    def __init__(self, pins=[23, 24, 8, 7]):
+    def __init__(self, pins=[24, 23, 8, 7]):
         self.Status = [0, 0, 0, 0]
 
         self.PINs = pins
 
         for pin in self.PINs:
-            GPIO.setup(pin, GPIO.OUT, initial=OFF)
+            GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
     def turnOn(self, LightID):
         if self.Status[LightID] == 0:
             self.Status[LightID] = 1
-            GPIO.output(self.PINs[LightID], ON)
+            GPIO.output(selfNs[LightID], GPIO.HIGH)
 
     def turnOff(self, LightID):
         if self.Status[LightID] == 1:
             self.Status[LightID] = 0
-            GPIO.output(self.PINs[LightID], OFF)
+            GPIO.output(self.PINs[LightID], GPIO.LOW)
     
     def TurnLeft(self):
         self.turnOff(2)
         while True:
-            self.turnOn(3)
+            self.TurnOn(3)
             time.sleep(0.2)
             self.turnOff(3)
             time.sleep(0.2)
@@ -59,7 +56,7 @@ class Light:
     def TurnRight(self):
         self.turnOff(3)
         while True:
-            self.turnOn(2)
+            self.TurnOn(2)
             time.sleep(0.2)
             self.turnOff(2)
             time.sleep(0.2)
