@@ -76,7 +76,7 @@ class ConnectServer:
                  ServerPort=5000,
                  StereoCamInstance=None,
                  StreamPort=8000):
-        self.MyIP = '192.168.53.108'
+        self.MyIP = '192.168.53.113'
         self.ServerIP = ServerIP
         self.PORT = ServerPort
         self.ConnectStatus = True
@@ -101,11 +101,11 @@ class ConnectServer:
             time.sleep(0.5)
             self.serverThread.start()
         
-        # if self.streamming == False:
-        #     self.videoStream = threading.Thread(target=self.streamVideo, daemon=True)
-        #     self.streamming = True
-        #     time.sleep(1.5)
-        #     self.videoStream.start()
+        if self.streamming == False:
+            self.videoStream = threading.Thread(target=self.streamVideo, daemon=True)
+            self.streamming = True
+            time.sleep(1.5)
+            self.videoStream.start()
 
     # ======================================
     def checkConnection(self):
@@ -178,11 +178,13 @@ class ConnectServer:
 
         fs = FrameSegment(s, port, addr=address)
         while self.streamming:
-            if self.StereoCamera is not None:
-                frame1, frame2 = self.StereoCamera.getFrames()
-            if frame1 is not None:
-                fs.udp_frame(frame1)
-
+            try:
+                if self.StereoCamera is not None:
+                    frame1, frame2 = self.StereoCamera.getFrames()
+                if frame1 is not None:
+                    fs.udp_frame(frame1)
+            except:
+                print('Streammng Error!')
         s.close()
 
     # ======================================

@@ -107,7 +107,7 @@ class Motor():
         self.pwm[0].ChangeDutyCycle(self.speed)
         self.pwm[1].ChangeDutyCycle(self.speed)
 
-    def stop(self):
+    def normal(self):
         GPIO.output(self.left_motor[0], GPIO.LOW)
         GPIO.output(self.right_motor[0], GPIO.LOW)
        
@@ -124,13 +124,15 @@ class Motor():
 if __name__ == '__main__':
     mt = Motor()
     speed = 1
-    count = 1
-    while True:
-        count += 1
-        for i in range(-9, 10, 1):
-            speed = i*0.1
-            mt.up(speed)
-            time.sleep(0.1)
-        if count == 3:
-            break
-    mt.stop()
+    for i in range(-9, 10, 1):
+        speed = i*0.1
+        mt.up(speed)
+        time.sleep(0.1)
+    mt.down(0)
+    time.sleep(1)
+    mt.left(0)
+    time.sleep(1)
+    mt.right(0)
+    time.sleep(1)
+    mt.normal()
+    GPIO.cleanup()

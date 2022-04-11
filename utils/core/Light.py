@@ -15,7 +15,7 @@ import threading
 import Jetson.GPIO as GPIO
 
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 ON = GPIO.LOW
 OFF = GPIO.HIGH
@@ -30,7 +30,7 @@ class Light:
     - Chân kết nối pins: List tên các chân tương ứng với
         các đèn [Head, Stop, Left, Right]
     """
-    def __init__(self, pins=[23, 24, 8, 7]):
+    def __init__(self, pins=[16, 18, 24, 26]):
         self.Status = [0, 0, 0, 0]
         self.MODE = {
             'TURN': 0, # 0-OFF, 1:RIGHT, 2: LEFT, 3:GO AHEAD
@@ -56,12 +56,14 @@ class Light:
             self.thread_turn.start()
 
     def stop(self):
-        self.turnOffAll()
+        self.MODE['TURN'] = 0
+        self.MODE['NIGHT'] = 0
+        self.MODE['STOP'] = 0
         if self.running:
             self.running = False
             self.thread_light.join()
             self.thread_turn.join()
-
+        
     def setMODE(self, mode, value):
         self.MODE[mode] = value
 
@@ -77,8 +79,6 @@ class Light:
             else:
                 self.turnOff(0)
 
-            time.sleep(0.1)
-    
     def runTurning(self):
         while self.running:
             if self.MODE['TURN'] == 1:
@@ -101,7 +101,6 @@ class Light:
             else:
                 self.turnOff(2)
                 self.turnOff(2)
-                time.sleep(0.2)
 
 
     def turnOn(self, LightID):
@@ -128,3 +127,4 @@ if __name__=='__main__':
             Lg.turnOff(ID)
             time.sleep(0.1)
     Lg.turnOffAll()
+    GPIO.cleanup()
