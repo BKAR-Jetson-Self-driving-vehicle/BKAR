@@ -10,25 +10,51 @@
 +============================================================+
 """
 
+import os
+import sys
 import time
 import threading
-import Control, Autopilot, AI
-from core.Light import Light
-from core.Motor import Motor
+from multiprocessing import Process, Lock, Array, Value, Queue
+
+import cv2
+import numpy as np
+from .core import Camera
+
+
+camera_config = {
+    'number_of_cameras': 2,
+    'resolution': (720, 1080, 3),
+    'fps': 30,
+    'flip_mode': 2,
+}
+
 
 class BKAR:
-    def __init__(self) -> None:
-        self.Speed = 0
-        self.MoveMode = 0 # 0-stop, 1-go ahead, -1-go back, 2-turn left, 3-turn right
+    def __init__(self):
+        self.CameraFrame = []
+        self.Speed  = Value("f", -1.0)
+        self.Light  = Array("I", [0, 0, 0, 0])
+        self.Sensor = Array("f", [0., 0., 0.])
 
-        self.DriveMode = "REMOTE"
+        self.ContorlProcess = None
+        self.CameraProcess  = None
+        self.ServerProcess  = None
 
-        self.Locking = threading.Lock()
-        self.thread = threading.Thread(target=self.run, daemon=True)
-        self.running = False
+        self.driver_mode = Value("I", 0) # 0-REMOTE, 1-AI
+
+        self.mp_logs_queue = Queue(maxsize=100)
 
     def start(self):
-        pass
+        # init camera:
+        for cam in range(camera_config['number_of_cameras']):
+            self.CameraFrame.append(Array("I",
+                                          int(np.prod(camera_config['resolution'])),
+                                          lock=Lock()))
+        self.CameraProcess = Process(target=self.CameraManager, args=(camera_config, self.CameraFrame, self.mp_logs_queue,))
+        self.CameraProcess.start()
+        
+        # init control:
+
 
     def run(self):
         pass
@@ -39,5 +65,12 @@ class BKAR:
     def driverByHand(self):
         pass
     
+        pass
     def driverByAI(self):
         pass
+    
+    def CameraManager(self, config, mp_frames):
+        pass
+
+if __name__=='__main__':
+    pass
