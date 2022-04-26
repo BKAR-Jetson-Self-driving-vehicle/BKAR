@@ -18,7 +18,7 @@ import time
 
 import cv2
 import numpy as np
-from multiprocessing import Array, Value, Process, Lock
+from multiprocessing import Queue, Value, Process, Lock
 from jetcam.csi_camera import CSICamera
 
 
@@ -27,21 +27,22 @@ class Stereo_Camera:
     Read IMX219-83 Stereo Camera from Jetson Nano
     """
     def __init__(self, camera_configs={},
-                 mp_lframe=None, mp_rframe=None, mp_running=None):
+                 mp_queue0=None, mp_queue1=None, mp_running=None):
 
         self.CAM_CONFIGS = camera_configs
 
-        self.mp_frames = [mp_lframe, mp_rframe]
+        self.mp_queues = [mp_queue0, mp_queue1]
         self.CaptureProcess = None
         self.mp_running = mp_running
 
     def start(self):
         self.CaptureProcess = Process(target=self.Capturing,
-                                      args=(self.CAM_CONFIGS, self.mp_frames, self.mp_running))
+                                      args=(self.CAM_CONFIGS, self.mp_queues, self.mp_running))
         self.CaptureProcess.start()
         print('start successful!')
 
-    def Capturing(self, CONFIGS, FRAMES, running):
+    def Capturing(self, CONFIGS, Queues, running):
+        count = 0
         left_cam = CSICamera(capture_device=0,
                          width=CONFIGS['width'], height=CONFIGS['height'],
                          capture_width=CONFIGS['width'], capture_height=CONFIGS['height'],
@@ -55,16 +56,16 @@ class Stereo_Camera:
         while self.mp_running.value == 1:
             lframe = left_cam.read()
             rframe = right_cam.read()
+            
+            if not Queues[0].full():
+                Queues[0].put(lframe)
+            if not Queues[0].full():
+                Queues[1].put(lframe)
 
-            FRAMES[0].acquire()
-            FRAMES[0][:] = lframe
-            FRAMES[0].release()
-
-            FRAMES[1].acquire()
-            FRAMES[1][:] = rframe
-            FRAMES[1].release()
-
-            print('Captured!')
+            count += 1
+            print('Captured', count, 'frames')
+        
+        print('Process capture stopped!')
 
     def getFrames(self):
         pass
@@ -77,15 +78,29 @@ class Stereo_Camera:
 
     def stop(self):
         self.mp_running.value = 0
+        time.sleep(2)
+        print('Cleanning queues')
+        while True:
+            if not self.mp_queues[0].empty():
+                self.mp_queues[0].get()
+            elif not self.mp_queues[1].empty():
+                self.mp_queues[1].get()
+            else:
+                break
+        print('Cleaned!')
 
+        # Error can not join process because waitting something, fix it later
         if self.CaptureProcess is not None:
             self.CaptureProcess.join()
+            time.sleep(2)
             self.CaptureProcess = None
 
 
 if __name__ == "__main__":
-    FRAME0 = Array("I", int(np.prod((720, 1280, 3))), lock=Lock())
-    FRAME1 = Array("I", int(np.prod((720, 1280, 3))), lock=Lock())
+
+    queue_camera_0 = Queue(maxsize=100)
+    queue_camera_1 = Queue(maxsize=100)
+
     mp_running = Value("I", 1)
     config = {
         'height': 720,
@@ -94,8 +109,8 @@ if __name__ == "__main__":
         'flip': 2,
         }
     
-    MY_CAM = Stereo_Camera(config, FRAME0, FRAME1, mp_running)
+    MY_CAM = Stereo_Camera(config, queue_camera_0, queue_camera_1, mp_running)
     MY_CAM.start()
-    time.sleep(30)
+    time.sleep(4)
     MY_CAM.stop()
     print('stop successful!')
