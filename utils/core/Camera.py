@@ -111,6 +111,20 @@ if __name__ == "__main__":
     
     MY_CAM = Stereo_Camera(config, queue_camera_0, queue_camera_1, mp_running)
     MY_CAM.start()
-    time.sleep(4)
+    start_time =time.time()
+    
+    while True:
+        cam0, cam1 = [], []
+        if not queue_camera_0.empty():
+            cam0 = queue_camera_0.get()
+        if not queue_camera_1.empty():
+            cam1 = queue_camera_1.get()
+
+        cv2.imwrite('data/' + str(time.time()) + '.jpg', cam0)
+
+        if time.time()-start_time >= 2:
+            break
+    
+    cv2.destroyAllWindows()
     MY_CAM.stop()
     print('stop successful!')
