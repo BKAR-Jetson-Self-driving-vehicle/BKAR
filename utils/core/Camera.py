@@ -196,14 +196,14 @@ class Stereo_Camera:
         self.cleanQueues()
         
         self.CaptureProcess.join()
-        print('process Capturing is stopped!')
+        print('process CSI Camera capture is stopped!')
 
 
 if __name__ == "__main__":
 
     # Set maxsize small because, if it bigger, it can store more frame and delay to current time
-    queue_camera_0 = Queue(maxsize=1)
-    queue_camera_1 = Queue(maxsize=1)
+    queue_camera_0 = Queue(maxsize=3)
+    queue_camera_1 = Queue(maxsize=3)
 
     config = {
         'height': 720,
@@ -218,7 +218,8 @@ if __name__ == "__main__":
     
     time0, time1 = 0, 0
     font = cv2.FONT_HERSHEY_SIMPLEX
-
+    sum_fps = 0
+    count_fps = 0
     while True:
         cam0, cam1 = None, None
         if not queue_camera_0.empty():
@@ -228,23 +229,26 @@ if __name__ == "__main__":
 
         if cam0 is not None and cam1 is not None:
             time1 = time.time()
-            fps = str(int((1/(time1 - time0))))
+            fps = int((1/(time1 - time0)))
             time0 = time1
-            cv2.putText(cam0, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
-            cv2.putText(cam1, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+            
+            sum_fps += fps
+            count_fps += 1
+            print("Avg of FPS:", sum_fps//count_fps)
 
-            image = np.concatenate((cam0, cam1), axis=1)
+            # cv2.putText(cam0, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+            # cv2.putText(cam1, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+
+            # image = np.concatenate((cam0, cam1), axis=1)
         
-            cv2.imshow("CSI Camera", image)
+            # cv2.imshow("CSI Camera", image)
 
-        if cv2.waitKey(25)==ord('q'):
+        # if cv2.waitKey(25)==ord('q'):
+        #     break
+
+        if int(time.time()-start_time) > 15:
             break
 
-        if int(time.time()-start_time) > 30:
-            break
-
-    cv2.destroyAllWindows()
-    # mp_running.value = 0
-    # time.sleep(2)
+    # cv2.destroyAllWindows()
     MY_CAM.stop()
-    print('Stopping program!')
+    print('Stopping CSI Camera module!')
