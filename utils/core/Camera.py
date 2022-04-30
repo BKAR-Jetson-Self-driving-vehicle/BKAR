@@ -27,7 +27,8 @@ class Stereo_Camera:
     Read IMX219-83 Stereo Camera from Jetson Nano
     """
     def __init__(self, camera_configs={},
-                 mp_queue0=None, mp_queue1=None, mp_running=None):
+                 mp_queue0=None, mp_queue1=None,
+                 mp_running=None):
 
         self.CAM_CONFIGS = camera_configs
 
@@ -42,7 +43,6 @@ class Stereo_Camera:
         print('start successful!')
 
     def Capturing(self, CONFIGS, Queues, running):
-        count = 0
         left_cam = CSICamera(capture_device=0,
                          width=CONFIGS['width'], height=CONFIGS['height'],
                          capture_width=CONFIGS['width'], capture_height=CONFIGS['height'],
@@ -53,19 +53,16 @@ class Stereo_Camera:
                          capture_width=CONFIGS['width'], capture_height=CONFIGS['height'],
                          capture_fps=CONFIGS['fps'], capture_flip=CONFIGS['flip'])
 
-        while self.mp_running.value == 1:
+        while running.value == 1:
             lframe = left_cam.read()
             rframe = right_cam.read()
             
             if not Queues[0].full():
                 Queues[0].put(lframe)
             if not Queues[0].full():
-                Queues[1].put(lframe)
+                Queues[1].put(rframe)
 
-            count += 1
-            print('Captured', count, 'frames')
-        
-        print('Process capture stopped!')
+        self.stop()
 
     def getFrames(self):
         pass
@@ -77,8 +74,6 @@ class Stereo_Camera:
         pass
 
     def stop(self):
-        self.mp_running.value = 0
-        time.sleep(2)
         print('Cleanning queues')
         while True:
             if not self.mp_queues[0].empty():
@@ -90,16 +85,14 @@ class Stereo_Camera:
         print('Cleaned!')
 
         # Error can not join process because waitting something, fix it later
-        if self.CaptureProcess is not None:
-            self.CaptureProcess.join()
-            time.sleep(2)
-            self.CaptureProcess = None
+        self.CaptureProcess.join()
+        print('process Capturing is stopped!')
 
 
 if __name__ == "__main__":
 
-    queue_camera_0 = Queue(maxsize=100)
-    queue_camera_1 = Queue(maxsize=100)
+    queue_camera_0 = Queue(maxsize=200)
+    queue_camera_1 = Queue(maxsize=200)
 
     mp_running = Value("I", 1)
     config = {
@@ -114,17 +107,20 @@ if __name__ == "__main__":
     start_time =time.time()
     
     while True:
-        cam0, cam1 = [], []
+        cam0, cam1 = None, None
         if not queue_camera_0.empty():
             cam0 = queue_camera_0.get()
         if not queue_camera_1.empty():
             cam1 = queue_camera_1.get()
 
-        cv2.imwrite('data/' + str(time.time()) + '.jpg', cam0)
+        # cv2.imwrite('data/' + str(time.time()) + '.jpg', cam0)
 
-        if time.time()-start_time >= 2:
+        if int(time.time()-start_time) > 5:
             break
-    
-    cv2.destroyAllWindows()
-    MY_CAM.stop()
-    print('stop successful!')
+
+    mp_running.value = 0
+    print('Stopping program!')
+    # time.sleep(3)
+    # cv2.destroyAllWindows()
+    # MY_CAM.stop()
+    # print('stop successful!')
