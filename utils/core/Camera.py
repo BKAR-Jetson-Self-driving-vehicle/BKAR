@@ -202,8 +202,8 @@ class Stereo_Camera:
 if __name__ == "__main__":
 
     # Set maxsize small because, if it bigger, it can store more frame and delay to current time
-    queue_camera_0 = Queue(maxsize=3)
-    queue_camera_1 = Queue(maxsize=3)
+    queue_camera_0 = Queue(maxsize=1)
+    queue_camera_1 = Queue(maxsize=1)
 
     config = {
         'height': 720,
@@ -216,6 +216,9 @@ if __name__ == "__main__":
     MY_CAM.start()
     start_time =time.time()
     
+    time0, time1 = 0, 0
+    font = cv2.FONT_HERSHEY_SIMPLEX
+
     while True:
         cam0, cam1 = None, None
         if not queue_camera_0.empty():
@@ -223,13 +226,21 @@ if __name__ == "__main__":
         if not queue_camera_1.empty():
             cam1 = queue_camera_1.get()
 
-        if cam0 is not None:
-            cv2.imshow("CSI Camera", cam0)
+        if cam0 is not None and cam1 is not None:
+            time1 = time.time()
+            fps = str(int((1/(time1 - time0))))
+            time0 = time1
+            cv2.putText(cam0, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+            cv2.putText(cam1, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+
+            image = np.concatenate((cam0, cam1), axis=1)
+        
+            cv2.imshow("CSI Camera", image)
 
         if cv2.waitKey(25)==ord('q'):
             break
 
-        if int(time.time()-start_time) > 20:
+        if int(time.time()-start_time) > 30:
             break
 
     cv2.destroyAllWindows()
