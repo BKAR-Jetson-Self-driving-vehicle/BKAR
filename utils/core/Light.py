@@ -120,12 +120,12 @@ class Light:
 
 if __name__=='__main__':
     Lg = Light()
-    for i in range(10):
+    for i in range(9):
         for ID in range(4):
             Lg.turnOn(ID)
-        time.sleep(2)
+        time.sleep(0.2)
         for ID in range(4):
             Lg.turnOff(ID)
-        time.sleep(2)
+        time.sleep(0.2)
     Lg.turnOffAll()
     GPIO.cleanup()
