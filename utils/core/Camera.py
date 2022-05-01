@@ -11,7 +11,6 @@
 
 # Requirement:
 - Opencv với bản build gồm Gstreamer
-- Bản fork của Jetcam với Flip method
 """
 import os
 import time
