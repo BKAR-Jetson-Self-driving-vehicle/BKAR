@@ -123,9 +123,9 @@ if __name__=='__main__':
     for i in range(9):
         for ID in range(4):
             Lg.turnOn(ID)
-        time.sleep(0.2)
+            time.sleep(0.1)
         for ID in range(4):
             Lg.turnOff(ID)
-        time.sleep(0.2)
+            time.sleep(0.1)
     Lg.turnOffAll()
     GPIO.cleanup()

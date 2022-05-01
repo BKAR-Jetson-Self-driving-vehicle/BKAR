@@ -12,6 +12,7 @@
 
 import os
 import time
+from math import trunc
 from mpu6050 import mpu6050
 
 
@@ -78,7 +79,7 @@ class Sensor:
         """
         self.accel = self.sensor.get_accel_data()
         time.sleep(self.timeout)
-        return list(self.accel.values())
+        return [float(f'{i:.1f}') for i in self.accel.values()]
 
     def getGyro(self):
         """
@@ -87,7 +88,7 @@ class Sensor:
         """
         self.gyro = self.sensor.get_gyro_data()
         time.sleep(self.timeout)
-        return list(self.gyro.values())
+        return [float(f'{i:.1f}') for i in self.gyro.values()]
 
     def getTemp(self):
         """
@@ -96,7 +97,7 @@ class Sensor:
         """
         self.temp = self.sensor.get_temp()
         time.sleep(self.timeout)
-        return self.temp
+        return float(f'{self.temp:.1f}')
 
     def reset(self, address=0x68):
         """
@@ -115,10 +116,16 @@ class Sensor:
 
 if __name__ == '__main__':
     ss = Sensor()
+    start_time = time.time()
+    
     while True:
-        print(ss.getAccel())
-        print(ss.getGyro())
+        x, y, z = ss.getAccel()
+        print("{:5} {:5} {:5}".format(x, y, z))
+        x, y, z = ss.getGyro()
+        print("{:5} {:5} {:5}".format(x, y, z))
         print(ss.getTemp())
         print("="*60)
         time.sleep(0.2)
         os.system('clear')
+        if time.time()-start_time > 30:
+            break
