@@ -12,9 +12,12 @@
 
 import time
 import threading
+import multiprocessing as mp
+from multiprocessing import Array, Value, Lock, Process
 
 import Jetson.GPIO as GPIO
 from mpu6050 import mpu6050
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -59,77 +62,11 @@ class Light:
     """
     def __init__(self, pins=[16, 18, 24, 26]):
         self.Status = [0, 0, 0, 0]
-        self.MODE = {
-            'TURN': 0, # 0-OFF, 1:RIGHT, 2: LEFT, 3:GO AHEAD
-            'NIGHT': 0, # 0-DAY, 1-NIGHT, control HEAD light
-            'STOP': 0, #0-OFF, 1-ON, control read light in back
-        }
         self.PINs = pins
 
         for pin in self.PINs:
             GPIO.setup(pin, GPIO.OUT, initial=OFF)
         
-        self.thread_light = None
-        self.running = False
-        self.lock_light = threading.Lock()
-
-    def start(self):
-        self.turnOffAll()
-        if self.thread_light is None:
-            self.running = True
-            self.thread_light = threading.Thread(target=self.run, daemon=True)
-            self.thread_turn = threading.Thread(target=self.runTurning, daemon=True)
-            self.thread_light.start()
-            self.thread_turn.start()
-
-    def stop(self):
-        self.MODE['TURN'] = 0
-        self.MODE['NIGHT'] = 0
-        self.MODE['STOP'] = 0
-        if self.running:
-            self.running = False
-            self.thread_light.join()
-            self.thread_turn.join()
-        
-    def setMODE(self, mode, value):
-        self.MODE[mode] = value
-
-    def run(self):
-        while self.running:
-            if self.MODE['STOP'] == 1:
-                self.turnOn(1)
-            else:
-                self.turnOff(1)
-            
-            if self.MODE['NIGHT'] == 1:
-                self.turnOn(0)
-            else:
-                self.turnOff(0)
-
-    def runTurning(self):
-        while self.running:
-            if self.MODE['TURN'] == 1:
-                self.turnOn(3)
-                time.sleep(0.2)
-                self.turnOff(3)
-                time.sleep(0.2)
-            elif self.MODE['TURN'] == 2:
-                self.turnOn(2)
-                time.sleep(0.2)
-                self.turnOff(2)
-                time.sleep(0.2)
-            elif self.MODE['TURN'] == 3:
-                self.turnOn(2)
-                self.turnOn(3)
-                time.sleep(0.2)
-                self.turnOff(2)
-                self.turnOff(3)
-                time.sleep(0.2)
-            else:
-                self.turnOff(2)
-                self.turnOff(2)
-
-
     def turnOn(self, LightID):
         if self.Status[LightID] == 0:
             self.Status[LightID] = 1
@@ -342,8 +279,119 @@ class Sensor:
 
 
 class GPIO_CONTROLER:
-    pass
+    def __init__(self, mp_light_status, mp_motor_status, mp_sensor_status):
+        self.mp_lights = mp_light_status
+        self.mp_speed, self.mp_move = mp_motor_status
+        self.mp_sensor = mp_sensor_status
+
+        self.mp_running   = Value("I", 0)
+        self.processLight = None
+        self.processMotor = None
+        # self.processSensor = None
+
+        self.lights = Light()
+        self.motors = Motor()
+
+    def start(self):
+        self.mp_running.value = 1
+        
+        self.processLight = Process(target=self.runLights, args=(self.lights,
+                                                                 self.mp_lights,
+                                                                 self.mp_running))
+        
+        self.processMotor = Process(target=self.runMotors, args=(self.motors,
+                                                                 self.mp_speed,
+                                                                 self.mp_move,
+                                                                 self.mp_running))
+        
+        # self.processLight = Process(target=self.runSensor, args=())
+
+        self.processLight.start()
+        self.processMotor.start()
+        # self.processSensor.start()
+  
+    def runLights(self, lights_obj, Lights, mp_running):
+        while mp_running.value == 1:
+            if Lights[0] == 1:
+                lights_obj.turnOn(0)
+            else:
+                lights_obj.turnOff(0)
+            
+            if Lights[1] == 1:
+                lights_obj.turnOn(1)
+            else:
+                lights_obj.turnOff(1)
+
+            if Lights[2] == 1:
+                lights_obj.turnOn(2)
+            else:
+                lights_obj.turnOff(2)
+
+            if Lights[3] == 1:
+                lights_obj.turnOn(3)
+            else:
+                lights_obj.turnOff(3)
+
+    def runMotors(self, motors_obj, speed, move, mp_running):
+        while mp_running.value == 1:
+            if move.value == 0:
+                motors_obj.up(speed=speed.value)
+            elif move.value == -1:
+                motors_obj.left(speed=speed.value)
+            elif move.value == 1:
+                motors_obj.right(speed=speed.value)
+            else:
+                pass
+
+    def runSensor(self):
+        pass
+
+    def stop(self):
+        self.mp_running.value = 0
+        time.sleep(0.5)
+        self.processLight.join()
+        self.processMotor.join()
+        # self.processSensor.join()
+        
+        self.lights.turnOffAll()
+        GPIO.cleanup()
 
 
 if __name__=='__main__':
-    pass
+    mp_Speed = Value('d', -1) # Between -1.0 and 1.0
+    mp_Move = Value('i', 0) # 0-up, -1-'left', 1-'right'
+    mp_Lights = Array('I', [1, 1, 1, 1], lock=Lock())
+    mp_Motors = (mp_Speed, mp_Move)
+    mp_Sensor = Array('f', [0, 0, 0], lock=Lock())
+
+    gpio_ctrl = GPIO_CONTROLER(mp_Lights, mp_Motors, mp_Sensor)
+    gpio_ctrl.start()
+
+    start_time = time.time()
+    while True:
+        mp_Lights[:] = [0, 0, 0, 0]
+        time.sleep(0.2)
+        mp_Lights[:] = [1, 1, 1, 1]
+        time.sleep(0.2)
+
+
+        if time.time()-start_time > 3:
+            break
+
+    start_time = time.time()
+    while True:
+        mp_Speed.value = 0
+        
+        mp_Move.value = 0
+        time.sleep(0.5)
+        mp_Move.value = -1
+        time.sleep(0.5)
+        mp_Move.value = 1
+        time.sleep(0.5)
+
+        mp_Speed.value = -1
+
+        if time.time()-start_time > 3:
+            break
+
+    gpio_ctrl.stop()
