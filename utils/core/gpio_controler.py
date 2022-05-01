@@ -279,10 +279,12 @@ class Sensor:
 
 
 class GPIO_CONTROLER:
-    def __init__(self, mp_light_status, mp_motor_status, mp_sensor_status):
-        self.mp_lights = mp_light_status
-        self.mp_speed, self.mp_move = mp_motor_status
-        self.mp_sensor = mp_sensor_status
+    def __init__(self):
+
+        self.mp_lights = Array('I', [0, 0, 0, 0], lock=Lock())
+        self.mp_speed = Value('d', -1) # Between -1.0 and 1.0
+        self.mp_move = Value('i', 0) # 0-up, -1-'left', 1-'right'
+        self.mp_sensor = Array('f', [0, 0, 0], lock=Lock())
 
         self.mp_running   = Value("I", 0)
         self.processLight = None
@@ -364,21 +366,16 @@ class GPIO_CONTROLER:
 
 
 if __name__=='__main__':
-    mp_Speed = Value('d', -1) # Between -1.0 and 1.0
-    mp_Move = Value('i', 0) # 0-up, -1-'left', 1-'right'
-    mp_Lights = Array('I', [1, 1, 1, 1], lock=Lock())
-    mp_Motors = (mp_Speed, mp_Move)
-    mp_Sensor = Array('f', [0, 0, 0], lock=Lock())
 
-    gpio_ctrl = GPIO_CONTROLER(mp_Lights, mp_Motors, mp_Sensor)
+    gpio_ctrl = GPIO_CONTROLER()
     gpio_ctrl.start()
 
     print('Testing Lights')
     start_time = time.time()
     while True:
-        mp_Lights[:] = [0, 0, 0, 0]
+        gpio_ctrl.mp_lights[:] = [0, 0, 0, 0]
         time.sleep(0.2)
-        mp_Lights[:] = [1, 1, 1, 1]
+        gpio_ctrl.mp_lights[:] = [1, 1, 1, 1]
         time.sleep(0.2)
 
         if time.time()-start_time > 3:
@@ -387,23 +384,23 @@ if __name__=='__main__':
     print('Testing Motors')
     start_time = time.time()
     while True:
-        mp_Speed.value = -0.01
+        gpio_ctrl.mp_speed.value = -0.01
 
-        mp_Move.value = 0
+        gpio_ctrl.mp_move.value = 0
         time.sleep(1)
-        mp_Move.value = -1
+        gpio_ctrl.mp_move.value = -1
         time.sleep(1)
-        mp_Move.value = 1
+        gpio_ctrl.mp_move.value = 1
         time.sleep(1)
 
         if time.time()-start_time > 3:
-            mp_Speed.value = -1
+            gpio_ctrl.mp_speed.value = -1
             break
 
     print('Testing Sensor')
     start_time = time.time()
     while True:
-        print(mp_Sensor[:])
+        print(gpio_ctrl.mp_sensor[:])
         time.sleep(0.5)
 
         if time.time()-start_time > 3:
