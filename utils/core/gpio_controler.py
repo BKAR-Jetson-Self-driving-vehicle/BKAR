@@ -314,7 +314,18 @@ class GPIO_CONTROLER:
         self.processLight.start()
         self.processMotor.start()
         self.processSensor.start()
-  
+
+    def stop(self):
+        self.mp_running.value = 0
+        time.sleep(0.5)
+        self.processLight.join()
+        self.processMotor.join()
+        self.processSensor.join()
+
+        self.mp_speed.value = -1
+        self.lights.turnOffAll()
+        GPIO.cleanup()
+
     def runLights(self, lights_obj, Lights, mp_running):
         while mp_running.value == 1:
             if Lights[0] == 1:
@@ -353,16 +364,20 @@ class GPIO_CONTROLER:
             data = sensor_obj.getAccel()
             sensor_data[:] = data
 
-    def stop(self):
-        self.mp_running.value = 0
-        time.sleep(0.5)
-        self.processLight.join()
-        self.processMotor.join()
-        self.processSensor.join()
+    def get_Motors(self):
+        return (self.mp_speed, self.mp_move)
 
-        self.mp_speed.value = -1
-        self.lights.turnOffAll()
-        GPIO.cleanup()
+    def get_Lights(self):
+        return self.mp_lights
+
+    def get_Sensor(self):
+        return self.mp_sensor
+
+    def check_Running(self):
+        if self.mp_running == 1:
+            return True
+        else:
+            return False
 
 
 if __name__=='__main__':
@@ -370,12 +385,17 @@ if __name__=='__main__':
     gpio_ctrl = GPIO_CONTROLER()
     gpio_ctrl.start()
 
+    lights = gpio_ctrl.get_Lights()
+    motors = gpio_ctrl.get_Motors()
+    sensor = gpio_ctrl.get_Sensor()
+    speed, move = motors
+
     print('Testing Lights')
     start_time = time.time()
     while True:
-        gpio_ctrl.mp_lights[:] = [0, 0, 0, 0]
+        lights[:] = [0, 0, 0, 0]
         time.sleep(0.2)
-        gpio_ctrl.mp_lights[:] = [1, 1, 1, 1]
+        lights[:] = [1, 1, 1, 1]
         time.sleep(0.2)
 
         if time.time()-start_time > 3:
@@ -384,23 +404,23 @@ if __name__=='__main__':
     print('Testing Motors')
     start_time = time.time()
     while True:
-        gpio_ctrl.mp_speed.value = -0.01
+        speed.value = -0.01
 
-        gpio_ctrl.mp_move.value = 0
+        move.value = 0
         time.sleep(1)
-        gpio_ctrl.mp_move.value = -1
+        move.value = -1
         time.sleep(1)
-        gpio_ctrl.mp_move.value = 1
+        move.value = 1
         time.sleep(1)
 
         if time.time()-start_time > 3:
-            gpio_ctrl.mp_speed.value = -1
+            speed.value = -1
             break
 
     print('Testing Sensor')
     start_time = time.time()
     while True:
-        print(gpio_ctrl.mp_sensor[:])
+        print(sensor[:])
         time.sleep(0.5)
 
         if time.time()-start_time > 3:
