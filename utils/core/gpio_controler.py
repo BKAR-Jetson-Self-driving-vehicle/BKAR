@@ -243,7 +243,7 @@ class Sensor:
         """
         self.accel = self.sensor.get_accel_data()
         time.sleep(self.timeout)
-        return list(self.accel.values())
+        return [float(f'{i:.1f}') for i in self.accel.values()]
 
     def getGyro(self):
         """
@@ -252,7 +252,7 @@ class Sensor:
         """
         self.gyro = self.sensor.get_gyro_data()
         time.sleep(self.timeout)
-        return list(self.gyro.values())
+        return [float(f'{i:.1f}') for i in self.gyro.values()]
 
     def getTemp(self):
         """
@@ -261,7 +261,7 @@ class Sensor:
         """
         self.temp = self.sensor.get_temp()
         time.sleep(self.timeout)
-        return self.temp
+        return float(f'{self.temp:.1f}')
 
     def reset(self, address=0x68):
         """
@@ -287,28 +287,31 @@ class GPIO_CONTROLER:
         self.mp_running   = Value("I", 0)
         self.processLight = None
         self.processMotor = None
-        # self.processSensor = None
+        self.processSensor = None
 
         self.lights = Light()
         self.motors = Motor()
+        self.sensor = Sensor()
 
     def start(self):
         self.mp_running.value = 1
         
         self.processLight = Process(target=self.runLights, args=(self.lights,
                                                                  self.mp_lights,
-                                                                 self.mp_running))
+                                                                 self.mp_running,))
         
         self.processMotor = Process(target=self.runMotors, args=(self.motors,
                                                                  self.mp_speed,
                                                                  self.mp_move,
-                                                                 self.mp_running))
+                                                                 self.mp_running,))
         
-        # self.processLight = Process(target=self.runSensor, args=())
+        self.processSensor = Process(target=self.runSensor, args=(self.sensor,
+                                                                 self.mp_sensor,
+                                                                 self.mp_running,))
 
         self.processLight.start()
         self.processMotor.start()
-        # self.processSensor.start()
+        self.processSensor.start()
   
     def runLights(self, lights_obj, Lights, mp_running):
         while mp_running.value == 1:
@@ -343,16 +346,19 @@ class GPIO_CONTROLER:
             else:
                 pass
 
-    def runSensor(self):
-        pass
+    def runSensor(self, sensor_obj, sensor_data, running):
+        while running.value == 1:
+            data = sensor_obj.getAccel()
+            sensor_data[:] = data
 
     def stop(self):
         self.mp_running.value = 0
         time.sleep(0.5)
         self.processLight.join()
         self.processMotor.join()
-        # self.processSensor.join()
-        
+        self.processSensor.join()
+
+        self.mp_speed.value = -1
         self.lights.turnOffAll()
         GPIO.cleanup()
 
@@ -367,6 +373,7 @@ if __name__=='__main__':
     gpio_ctrl = GPIO_CONTROLER(mp_Lights, mp_Motors, mp_Sensor)
     gpio_ctrl.start()
 
+    print('Testing Lights')
     start_time = time.time()
     while True:
         mp_Lights[:] = [0, 0, 0, 0]
@@ -374,24 +381,32 @@ if __name__=='__main__':
         mp_Lights[:] = [1, 1, 1, 1]
         time.sleep(0.2)
 
-
         if time.time()-start_time > 3:
             break
 
+    print('Testing Motors')
     start_time = time.time()
     while True:
-        mp_Speed.value = 0
-        
-        mp_Move.value = 0
-        time.sleep(0.5)
-        mp_Move.value = -1
-        time.sleep(0.5)
-        mp_Move.value = 1
-        time.sleep(0.5)
+        mp_Speed.value = -0.01
 
-        mp_Speed.value = -1
+        mp_Move.value = 0
+        time.sleep(1)
+        mp_Move.value = -1
+        time.sleep(1)
+        mp_Move.value = 1
+        time.sleep(1)
 
         if time.time()-start_time > 3:
+            mp_Speed.value = -1
             break
+
+    print('Testing Sensor')
+    start_time = time.time()
+    while True:
+        print(mp_Sensor[:])
+        time.sleep(0.5)
+
+        if time.time()-start_time > 3:
+                break
 
     gpio_ctrl.stop()
