@@ -86,15 +86,15 @@ class Motor():
     def __init__(self, *args, **kwargs):
         super(Motor, self).__init__(*args, **kwargs)
 
-        # Speed values
+        self.Speed = 0
         self.left_speed = 0
         self.right_speed = 0
+        self.transmission_ratio = [1, 1]
 
         # Config pins connection
-#        self.left_motor = [36, 38]
-#        self.right_motor = [37, 35]
         self.left_motor = [38, 36]
         self.right_motor = [35, 37]
+
         GPIO.setup(32, GPIO.OUT)
         GPIO.setup(33, GPIO.OUT)
         self.pwm = [GPIO.PWM(32, 50), GPIO.PWM(33, 50)]
@@ -108,76 +108,37 @@ class Motor():
         self.pwm[0].start(0)
         self.pwm[1].start(0)
 
-    def set_motors(self, left_speed=1.0, right_speed=1.0):
-        GPIO.output(self.left_motor[0], GPIO.HIGH)
-        GPIO.output(self.right_motor[0], GPIO.HIGH)
-       
-        self.left_speed = ((left_speed - (-1))/2)*100
-        self.right_speed = ((right_speed - (-1))/2)*100
+    def run(self, speed=0, ratio=[1., 1.]):
+        self.Transmission_Ratio = ratio
+        self.Speed = speed
+        
+        self.left_speed = self.Transmission_Ratio[0]*abs(self.Speed)
+        self.right_speed = self.Transmission_Ratio[1]*abs(self.Speed)
 
-        self.pwm[0].ChangeDutyCycle(self.left_speed)
-        self.pwm[1].ChangeDutyCycle(self.right_speed)
+        if speed > 0: # up
+            GPIO.output(self.left_motor[0], GPIO.LOW)
+            GPIO.output(self.right_motor[0], GPIO.LOW)
+            GPIO.output(self.left_motor[1], GPIO.HIGH)
+            GPIO.output(self.right_motor[1], GPIO.HIGH)
 
-    def down(self, speed=1.0):
-        GPIO.output(self.left_motor[0], GPIO.HIGH)
-        GPIO.output(self.right_motor[0], GPIO.HIGH)
-       
-        GPIO.output(self.left_motor[1], GPIO.LOW)
-        GPIO.output(self.right_motor[1], GPIO.LOW)
-       
-        self.speed = ((speed - (-1))/2)*100
+            self.pwm[0].ChangeDutyCycle(self.left_speed)
+            self.pwm[1].ChangeDutyCycle(self.right_speed)
+        elif speed < 0: # down
+            GPIO.output(self.left_motor[0], GPIO.HIGH)
+            GPIO.output(self.right_motor[0], GPIO.HIGH)
+            GPIO.output(self.left_motor[1], GPIO.LOW)
+            GPIO.output(self.right_motor[1], GPIO.LOW)
+            
+            self.pwm[0].ChangeDutyCycle(self.left_speed)
+            self.pwm[1].ChangeDutyCycle(self.right_speed)
+        else: # stop
+            GPIO.output(self.left_motor[0], GPIO.LOW)
+            GPIO.output(self.right_motor[0], GPIO.LOW)
+            GPIO.output(self.left_motor[1], GPIO.LOW)
+            GPIO.output(self.right_motor[1], GPIO.LOW)
 
-        self.pwm[0].ChangeDutyCycle(self.speed)
-        self.pwm[1].ChangeDutyCycle(self.speed)
-
-    def up(self, speed=1.0):
-        GPIO.output(self.left_motor[0], GPIO.LOW)
-        GPIO.output(self.right_motor[0], GPIO.LOW)
-       
-        GPIO.output(self.left_motor[1], GPIO.HIGH)
-        GPIO.output(self.right_motor[1], GPIO.HIGH)
-       
-        self.speed = ((speed - (-1))/2)*100
-
-        self.pwm[0].ChangeDutyCycle(self.speed)
-        self.pwm[1].ChangeDutyCycle(self.speed)
-
-    def left(self, speed=1.0):
-        GPIO.output(self.left_motor[0], GPIO.LOW)
-        GPIO.output(self.right_motor[0], GPIO.HIGH)
-       
-        GPIO.output(self.left_motor[1], GPIO.HIGH)
-        GPIO.output(self.right_motor[1], GPIO.LOW)
-       
-        self.speed = ((speed - (-1))/2)*100
-
-        self.pwm[0].ChangeDutyCycle(self.speed)
-        self.pwm[1].ChangeDutyCycle(self.speed)
-
-    def right(self, speed=1.0):
-        GPIO.output(self.left_motor[0], GPIO.HIGH)
-        GPIO.output(self.right_motor[0], GPIO.LOW)
-       
-        GPIO.output(self.left_motor[1], GPIO.LOW)
-        GPIO.output(self.right_motor[1], GPIO.HIGH)
-       
-        self.speed = ((speed - (-1))/2)*100
-
-        self.pwm[0].ChangeDutyCycle(self.speed)
-        self.pwm[1].ChangeDutyCycle(self.speed)
-
-    def normal(self):
-        GPIO.output(self.left_motor[0], GPIO.LOW)
-        GPIO.output(self.right_motor[0], GPIO.LOW)
-       
-        GPIO.output(self.left_motor[1], GPIO.LOW)
-        GPIO.output(self.right_motor[1], GPIO.LOW)
-       
-        self.left_speed = 0
-        self.right_speed = 0
-
-        self.pwm[0].ChangeDutyCycle(self.left_speed)
-        self.pwm[1].ChangeDutyCycle(self.right_speed)
+            self.pwm[0].ChangeDutyCycle(self.left_speed)
+            self.pwm[1].ChangeDutyCycle(self.right_speed)
 
 
 class Sensor:
@@ -282,8 +243,8 @@ class GPIO_CONTROLER:
     def __init__(self):
 
         self.mp_lights = Array('I', [0, 0, 0, 0], lock=Lock())
-        self.mp_speed = Value('d', -1) # Between -1.0 and 1.0
-        self.mp_move = Value('i', 0) # 0-up, -1-'left', 1-'right'
+        self.mp_speed = Value('d', -1) # Between 0 and 100
+        self.mp_trans_ratio = Array('f', [1., 1.], lock=Lock()) # [0:1]
         self.mp_sensor = Array('f', [0, 0, 0], lock=Lock())
 
         self.mp_running   = Value("I", 0)
@@ -304,7 +265,7 @@ class GPIO_CONTROLER:
         
         self.processMotor = Process(target=self.runMotors, args=(self.motors,
                                                                  self.mp_speed,
-                                                                 self.mp_move,
+                                                                 self.mp_trans_ratio,
                                                                  self.mp_running,))
         
         self.processSensor = Process(target=self.runSensor, args=(self.sensor,
@@ -348,16 +309,9 @@ class GPIO_CONTROLER:
             else:
                 lights_obj.turnOff(3)
 
-    def runMotors(self, motors_obj, speed, move, mp_running):
+    def runMotors(self, motors_obj, speed, transmission_ratio, mp_running):
         while mp_running.value == 1:
-            if move.value == 0:
-                motors_obj.up(speed=speed.value)
-            elif move.value == -1:
-                motors_obj.left(speed=speed.value)
-            elif move.value == 1:
-                motors_obj.right(speed=speed.value)
-            else:
-                pass
+                motors_obj.run(speed=speed.value, ratio=transmission_ratio[:])
 
     def runSensor(self, sensor_obj, sensor_data, running):
         while running.value == 1:
@@ -365,7 +319,7 @@ class GPIO_CONTROLER:
             sensor_data[:] = data
 
     def get_Motors(self):
-        return (self.mp_speed, self.mp_move)
+        return (self.mp_speed, self.mp_trans_ratio)
 
     def get_Lights(self):
         return self.mp_lights
@@ -388,7 +342,7 @@ if __name__=='__main__':
     lights = gpio_ctrl.get_Lights()
     motors = gpio_ctrl.get_Motors()
     sensor = gpio_ctrl.get_Sensor()
-    speed, move = motors
+    speed, trans_ratio = motors
 
     print('Testing Lights')
     start_time = time.time()
@@ -403,19 +357,12 @@ if __name__=='__main__':
 
     print('Testing Motors')
     start_time = time.time()
-    while True:
-        speed.value = -0.01
-
-        move.value = 0
-        time.sleep(1)
-        move.value = -1
-        time.sleep(1)
-        move.value = 1
-        time.sleep(1)
-
-        if time.time()-start_time > 3:
-            speed.value = -1
-            break
+    ratio = [1., 1.]
+    for i in range(-100, 100, 10):
+        speed.value = i
+        trans_ratio[:] = ratio
+        time.sleep(0.1)
+    speed.value = 0
 
     print('Testing Sensor')
     start_time = time.time()
