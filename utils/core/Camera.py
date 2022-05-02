@@ -201,8 +201,8 @@ class Stereo_Camera:
 if __name__ == "__main__":
 
     # Set maxsize small because, if it bigger, it can store more frame and delay to current time
-    queue_camera_0 = Queue(maxsize=3)
-    queue_camera_1 = Queue(maxsize=3)
+    queue_camera_0 = Queue(maxsize=1)
+    queue_camera_1 = Queue(maxsize=1)
 
     config = {
         'height': 720,
@@ -235,15 +235,16 @@ if __name__ == "__main__":
             count_fps += 1
             print("Avg of FPS:", sum_fps//count_fps)
 
-            # cv2.putText(cam0, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+            cv2.putText(cam0, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
             # cv2.putText(cam1, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
 
             # image = np.concatenate((cam0, cam1), axis=1)
         
             # cv2.imshow("CSI Camera", image)
+            cv2.imshow("CSI Caera", cam0)
 
-        # if cv2.waitKey(25)==ord('q'):
-        #     break
+        if cv2.waitKey(25)==ord('q'):
+            break
 
         if int(time.time()-start_time) > 15:
             break
