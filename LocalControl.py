@@ -29,16 +29,19 @@ def run():
     global max_speed, min_speed, lights, motors
 
     speed, move = motors
-    # lights[1] = 1
+    running = True
 
     start_time = time.time()
-    while True:
+    while running:
         try:
             events = get_gamepad()
         except:
             pass
         for event in events:
             if event.ev_type == 'Key' and event.state == 1:
+                if event.code == 'BTN_TRIGGER_HAPPY1':
+                    running = False
+
                 if event.code == 'BTN_TOP2':
                     move.value = 0
                 elif event.code == 'BTN_BASE2':
@@ -70,9 +73,7 @@ def run():
                 speed_convert = int(event.state)/(-128.0)
                 speed.value = speed_convert
                 print(event.ev_type, event.code, event.state)
-            
-        if time.time() - start_time > 60:
-            break
+
 
 run()
 gpio_ctrl.stop()
