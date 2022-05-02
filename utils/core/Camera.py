@@ -142,8 +142,8 @@ class Stereo_Camera:
                 capture_width=CONFIGS['width'],
                 capture_height=CONFIGS['height'],
                 flip_method=CONFIGS['flip'],
-                display_width=640,
-                display_height=380,
+                display_width=CONFIGS['width'],
+                display_height=CONFIGS['height'],
             )
         )
         right_camera.open(
@@ -152,8 +152,8 @@ class Stereo_Camera:
                 capture_width=CONFIGS['width'],
                 capture_height=CONFIGS['height'],
                 flip_method=CONFIGS['flip'],
-                display_width=640,
-                display_height=380,
+                display_width=CONFIGS['width'],
+                display_height=CONFIGS['height'],
             )
         )
 
