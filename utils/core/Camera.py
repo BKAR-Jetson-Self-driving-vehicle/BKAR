@@ -12,13 +12,15 @@
 # Requirement:
 - Opencv với bản build gồm Gstreamer
 """
+from csv import writer
 import os
+import sys
 import time
 import threading
 
 import cv2
 import numpy as np
-from multiprocessing import Queue, Value, Process
+from multiprocessing import Queue, Array, Value, Process, Lock
 
 
 def gstreamer_pipeline(
@@ -200,16 +202,21 @@ class Stereo_Camera:
 
 if __name__ == "__main__":
 
-    # Set maxsize small because, if it bigger, it can store more frame and delay to current time
-    queue_camera_0 = Queue(maxsize=1)
-    queue_camera_1 = Queue(maxsize=1)
+    h, w = 720, 1280
 
     config = {
-        'height': 720,
-        'width': 1280,
+        'height': h,
+        'width': w,
         'fps': 120,
         'flip': 2,
         }
+
+    # Set maxsize small because, if it bigger, it can store more frame and delay to current time
+    queue_camera_0 = Queue(maxsize=100)
+    queue_camera_1 = Queue(maxsize=100)
+
+    frames_0 = []
+    frames_1 = []
     
     MY_CAM = Stereo_Camera(config, queue_camera_0, queue_camera_1)
     MY_CAM.start()
@@ -219,6 +226,13 @@ if __name__ == "__main__":
     font = cv2.FONT_HERSHEY_SIMPLEX
     sum_fps = 0
     count_fps = 0
+
+    # path = '/home/thanhhoangvan/PROJECTS/BKAR/videos/'
+    # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    # writer0 = cv2.VideoWriter(path + 'cam0.mp4', fourcc, 14, (1280,720))
+    # writer1 = cv2.VideoWriter(path + 'cam1.mp4', fourcc, 14, (1280, 720))
+
+    start_time = time.time()
     while True:
         cam0, cam1 = None, None
         if not queue_camera_0.empty():
@@ -227,28 +241,33 @@ if __name__ == "__main__":
             cam1 = queue_camera_1.get()
 
         if cam0 is not None and cam1 is not None:
-            time1 = time.time()
-            fps = int((1/(time1 - time0)))
-            time0 = time1
+            # writer0.write(cam0)
+            # writer1.write(cam1)
             
-            sum_fps += fps
-            count_fps += 1
-            print("Avg of FPS:", sum_fps//count_fps)
+            # time1 = time.time()
+            # fps = int((1/(time1 - time0)))
+            # time0 = time1
+            
+            # sum_fps += fps
+            # count_fps += 1
+            # print("Avg of FPS:", sum_fps//count_fps)
 
-            cv2.putText(cam0, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+            # cv2.putText(cam0, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
             # cv2.putText(cam1, str(fps), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
 
-            # image = np.concatenate((cam0, cam1), axis=1)
+            image = np.concatenate((cam0, cam1), axis=1)
         
-            # cv2.imshow("CSI Camera", image)
-            cv2.imshow("CSI Caera", cam0)
-
+            cv2.imshow("CSI Camera", image)
+            # cv2.imshow("CSI Caera", cam0)
+            
         if cv2.waitKey(25)==ord('q'):
             break
 
-        if int(time.time()-start_time) > 15:
+        if int(time.time()-start_time) > 60:
             break
 
-    # cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
+    # writer0.release()
+    # writer1.release()
     MY_CAM.stop()
     print('Stopping CSI Camera module!')
