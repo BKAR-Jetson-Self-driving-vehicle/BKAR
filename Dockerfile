@@ -1,0 +1,1 @@
+FROM --platform=arm64 nvcr.io/nvidia/l4t-tensorflow:r34.1.0-tf2.8-py3

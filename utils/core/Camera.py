@@ -260,8 +260,13 @@ if __name__ == "__main__":
             cv2.imshow("CSI Camera", image)
             # cv2.imshow("CSI Caera", cam0)
             
-        if cv2.waitKey(25)==ord('q'):
-            break
+            key = cv2.waitKey(25)
+            if key==ord('q'):
+                break
+            elif key==ord('s'):
+                name = str(int(time.time()*1000)) + '.jpg'
+                cv2.imwrite('/home/thanhhoangvan/PROJECT/BKAR/images/cam0/' + name, cam0)
+                cv2.imwrite('/home/thanhhoangvan/PROJECT/BKAR/images/cam1/' + name, cam1)
 
         if int(time.time()-start_time) > 60:
             break
