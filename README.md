@@ -5,6 +5,7 @@
 ![Cover Photo](images/gif/cover.gif)
 </div>
 
+<br>
 <h2><b>1. Cấu tạo</b></h2>
 <h3><b>1.1. Phần cứng</b></h3>
 <ul>
@@ -33,6 +34,7 @@
 <li>NVIDIA Docker</li>
 </ul>
 
+<br>
 <h2><b>2. Các chức năng chính</b></h2>
 <ul>
 <li>Camera 360.</li>
@@ -43,11 +45,18 @@
 <li>Tự động lái tới vị trí chỉ định trên bản đồ.</li>
 </ul>
 
+<br>
 <h2><b>3. Bản đồ</b></h2>
+<h3><b>3.1 Giai đoạn 1</b></h3>
+<div align="center">
+    <image src="./images/Map2.jpg">
+</div>
+<h3><b>3.2 Giai đoạn 2</b></h3>
 <div align="center">
     <image src="./images/Map.jpg">
 </div>
 
+<br>
 <h2><b>4. Trạm sạc</b></h2>
 <div align="center">
     <image src="./images/ChargingStation.jpg">
