@@ -48,10 +48,12 @@
 <br>
 <h2><b>3. Bản đồ</b></h2>
 <h3><b>3.1 Giai đoạn 1</b></h3>
+Bản đồ đơn giản với hai làn đường song song, không có nhánh rẽ, chỉ có 4 khúc cua. Nhằm phát triển các tính năng giữ làn, chuyển làn. Ngoài ra giúp kiểm tra tính ổn định của các thành phần khác của hệ thống như hệ thống stream video, điều khiển từ xa, các cảm biến, v.v.
 <div align="center">
     <image src="./images/Map2.jpg">
 </div>
 <h3><b>3.2 Giai đoạn 2</b></h3>
+Bản đồ phức tạp hơn với các ngã 3, ngã tư, đường quanh co, biển báo giao thông, đèn tín hiệu giao thông, v.v. Giúp phát triển các tính năng tự hành, tuân thủ vạch kẻ đường, biển báo, v.v. Ngoài ra có các chuồng đỗ xe dọc và ngang, phát triển tính năng lùi vào bãi đỗ, triệu hồi xe.
 <div align="center">
     <image src="./images/Map.jpg">
 </div>
