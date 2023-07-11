@@ -1,8 +1,8 @@
 <div  align="center">
 <h1><b>BKAR - Xe tự lái cấp độ 2</b></h1>
-<p>Xe tự lái với máy tính nhúng AI NVIDIA Jetson Nano</p>
+<p><b>Xe tự lái với máy tính nhúng AI NVIDIA Jetson Nano</b></p>
 
-![Cover Photo](images/gif/cover.gif)
+![Cover Photo](images/bkar.jpg)
 </div>
 
 <br>
